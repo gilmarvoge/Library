@@ -1,0 +1,147 @@
+#page-login {
+  height: 100vh;
+  background: url("../../assets/login-background.svg") no-repeat 750px bottom;
+}
+
+#page-login .content {
+  width: 100%;
+  height: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+}
+
+#page-login .content header {
+  margin: 48px 0 0;
+}
+
+#page-login .content main {
+  flex: 1;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#page-login .content main h1 {
+  font-size: 54px;
+  color: var(--title-color);
+}
+
+#page-login .content main p {
+  font-size: 24px;
+  margin-top: 24px;
+  line-height: 38px;
+}
+
+#page-login .content main a {
+  width: 100%;
+  max-width: 360px;
+  height: 72px;
+  background: var(--primary-color);
+  border-radius: 8px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  margin-top: 40px;
+}
+
+#page-login .content main a span {
+  display: block;
+  background: rgba(0, 0, 0, 0.08);
+  width: 72px;
+  height: 72px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+#page-login .content main a span svg {
+  color: #fff;
+  width: 20px;
+  height: 20px;
+}
+
+#page-login .content main a strong {
+  flex: 1;
+  text-align: center;
+  color: #fff;
+}
+
+#page-login .content main a:hover {
+  background: #2fb86e;
+}
+  
+#page-login form {
+  margin: 60px auto;
+  padding: 64px;
+  max-width: 730px;
+  background: #fff;
+  border-radius: 8px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#page-login form fieldset {
+  margin-top: 64px;
+  min-inline-size: auto;
+  border: 0;
+}
+  
+#page-login form .field {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+}
+
+#page-login form .field input[type="text"],
+#page-login form .field input[type="password"]{
+  flex: 1;
+  background: #f0f0f5;
+  border-radius: 8px;
+  border: 0;
+  padding: 16px 24px;
+  font-size: 16px;
+  color: #6c6c80;
+}
+
+#page-login form .field input::placeholder {
+  color: #a0a0b2;
+}
+
+#page-login form .field label {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+
+@media (max-width: 900px) {
+  #page-login .content {
+    align-items: center;
+    text-align: center;
+  }
+
+  #page-login .content header {
+    margin: 48px auto 0;
+  }
+
+  #page-login .content main {
+    align-items: center;
+  }
+
+  #page-login .content main h1 {
+    font-size: 42px;
+  }
+
+  #page-login .content main p {
+    font-size: 24px;
+  }
+}
