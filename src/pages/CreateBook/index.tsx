@@ -1,258 +1,118 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { FiArrowLeft } from 'react-icons/fi';
-//import { Map, TileLayer, Marker } from 'react-leaflet';
-//import { LeafletMouseEvent } from 'leaflet';
-//import axios from 'axios';
-//import api from '../../services/api';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import Snackbar from '@material-ui/core/Snackbar';
+import { v4 as uuidv4 } from 'uuid';
+import { Alert } from 'components';
 
+import Header from 'components/Header';
+import { IBooks } from 'models';
+import { booksActions } from 'redux/actions';
 import './styles.css';
 
-import logo from '../../assets/logo.svg';
 
-interface Item {
-    id: number,
-    title: string,
-    image_url: string,
-}
+function CreateEditBook(props: any) {
+    const { push } = useHistory();
+    const { dispatch } = props;
+    console.log('propsr', props)
+    const { register, handleSubmit, errors } = useForm();
+    const [messages, setMessages] = useState('');
+    const [editPage, setEditPage] = useState(false);
+    const [openSnack, setOpenSnack] = useState(false);
 
-interface IBGEUFResponse {
-    sigla: string
-}
+    function handleSubmitBook(data: any, event: any) {
+        console.log('entrou enviar')
 
-interface IBGEMunicipiosResponse {
-    nome: string
-}
-
-function CreatePoint() {
-
-    const [items, setItems] = useState<Item[]>([]);
-    const [ufs, setUfs] = useState<string[]>([]);
-    const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        whatsapp: '',
-    })
-    const [selectedUf, setsSelectedUf] = useState('0');
-    const [cities, setCities] = useState<string[]>([]);
-    const [selectedCity, setSelectedCity] = useState('0');
-    const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
-
-    const history = useHistory();
-
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(position => {
-            const { latitude, longitude } = position.coords;
-
-            setInitialPosition([latitude, longitude]);
-        })
-    }, []);
-
-    useEffect(() => {
-        // api.get('items').then(response => {
-        //     setItems(response.data);
-        // })
-    }, []);
-
-    // useEffect(() => {
-    //     axios.get<IBGEUFResponse[]>('https://servicodados.ibge.gov.br/api/v1/localidades/estados').then(response => {
-    //         const ufInitials = response.data.map(uf => uf.sigla);
-    //         setUfs(ufInitials);
-    //     })
-    // }, []);
-
-    // useEffect(() => {
-    //     if (selectedUf === '0')
-    //         return;
-
-
-    //     axios.get<IBGEMunicipiosResponse[]>(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${selectedUf}/municipios`)
-    //         .then(response => {
-    //             const cities = response.data.map(municipio => municipio.nome);
-    //             console.log(cities)
-    //             setCities(cities);
-    //         })
-    // }, [selectedUf]);
-
-    function handleSelectedUf(event: ChangeEvent<HTMLSelectElement>) {
-        const uf = event.target.value;
-        setsSelectedUf(uf);
-    }
-
-    function handleSelectedCity(event: ChangeEvent<HTMLSelectElement>) {
-        const municipio = event.target.value;
-        setSelectedCity(municipio);
-        console.log(municipio)
-    }
-
-    // function handleMapClick(event: LeafletMouseEvent) {
-    //     setSelectedPosition([
-    //         event.latlng.lat,
-    //         event.latlng.lng
-    //     ])
-    // }
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-
-        setFormData({ ...formData, [name]: value })
-    }
-
-    function handleSelectItem(id: number) {
-        const alreadySelected = selectedItems.findIndex(item => item === id);
-
-        if (alreadySelected >= 0) {
-            const filteredItems = selectedItems.filter(item => item !== id);
-            setSelectedItems(filteredItems);
-        } else {
-            setSelectedItems([...selectedItems, id]);
-        }
-    }
-
-    async function handleSubmit(event: FormEvent) {
         event.preventDefault();
+        const { title, author, description, image_url } = data;
 
-        const { name, email, whatsapp } = formData;
-        const uf = selectedUf;
-        const city = selectedCity;
-        const [latitude, longitude] = selectedPosition;
-        const items = selectedItems;
+        if (title != '' && author != '' && description != '' && image_url) {
+            console.log('data enviar', data)
 
-        const data = {
-            name,
-            email,
-            whatsapp,
-            uf,
-            city,
-            latitude,
-            longitude,
-            items
+            const id = uuidv4()
+            const book = { id, author, title, description, image_url };
+            dispatch(booksActions.addBook(book));
+
         }
-        //await api.post('points', data);
-        alert('Ponto de coleta criado!');
-        history.push("/");
-
+        else {
+            setMessages('Campos não preenchidos');
+            setOpenSnack(true);
+        }
     }
+
+    const handleCloseSnack = (event: any, reason: string) => {
+        if (reason === 'clickaway')
+            return;
+
+        setOpenSnack(false);
+    };
 
     return (
-        <div id="page-create-point">
-            <header>
-                <img src={logo} alt="Ecoleta" />
-                <Link to="/">
-                    <FiArrowLeft />
-                    Voltar para home
-               </Link>
-            </header>
-            <form onSubmit={handleSubmit}>
-                <h1>Cadastro do <br />ponto de coleta</h1>
+        <div id='page-createedit-book'>
+            <Header />
+            <form onSubmit={handleSubmit(handleSubmitBook)}>
+                <h1>Cadastro do livro</h1>
                 <fieldset>
-                    <legend>
-                        <h2>Dados</h2>
-                    </legend>
-                    <div className="field">
-                        <label htmlFor="name">Nome da entidade</label>
+                    <div className='field'>
+                        <label htmlFor='name'>Nome</label>
                         <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            onChange={handleInputChange}
+                            type='text'
+                            name='title'
+                            id='title'
+                            ref={register({ required: 'Digite o nome do livro' })}
                         />
+                        {errors.title && errors.title?.message}
                     </div>
-                    <div className="field-group">
-                        <div className="field">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                type="email"
-                                name="email"
-                                id="email"
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                        <div className="field">
-                            <label htmlFor="whatsapp">Whatsapp</label>
-                            <input
-                                type="text"
-                                name="whatsapp"
-                                id="whatsapp"
-                                onChange={handleInputChange}
-                            />
-                        </div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>
-                        <h2>Endereço</h2>
-                        <span>Selecione o endereço no mapa</span>
-                    </legend>
-                    {/* <Map center={initialPosition} zoom={15} onClick={handleMapClick}>
-                        <TileLayer
-                            attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    <div className='field'>
+                        <label htmlFor='name'>Autor</label>
+                        <input
+                            type='text'
+                            name='author'
+                            id='author'
+                            ref={register({ required: 'Digite o nome do autor' })}
                         />
-                        <Marker position={selectedPosition} />
-                    </Map> */}
-                    <div className="field-group">
-                        <div className="field">
-                            <label htmlFor="uf">Estado (UF)</label>
-                            <select
-                                name="uf"
-                                id="uf"
-                                value={selectedUf}
-                                onChange={handleSelectedUf}
-                            >
-                                <option value="0">Selecione uma UF</option>
-                                {ufs.map(uf =>
-                                    (
-                                        <option key={uf} value={uf}>{uf}</option>
-                                    ))}
-                            </select>
-                        </div>
-                        <div className="field">
-                            <label htmlFor="cities">Cidade</label>
-                            <select
-                                name="cities"
-                                id="cities"
-                                value={selectedCity}
-                                onChange={handleSelectedCity}
-                            >
-                                <option value="0">Selecione uma cidade</option>
-                                {cities.map(city =>
-                                    (
-                                        <option key={city} value={city}>{city}</option>
-                                    ))}
-                            </select>
-                        </div>
+                        {errors.author && errors.author?.message}
+                    </div>
+                    <div className='field'>
+                        <label htmlFor='name'>Descrição</label>
+                        <input
+                            type='text'
+                            name='description'
+                            id='description'
+                            ref={register({ required: 'Digite a descrição do livro' })}
+                        />
+                        {errors.description && errors.description?.message}
+                    </div>
+                    <div className='field'>
+                        <label htmlFor='name'>Link da imagem</label>
+                        <input
+                            type='text'
+                            name='image_url'
+                            id='image_url'
+                            ref={register({ required: 'Digite o link da imagem do livro' })}
+                        />
+                        {errors.image_url && errors.image_url?.message}
                     </div>
                 </fieldset>
-                <fieldset>
-                    <legend>
-                        <h2>Ítens de coleta</h2>
-                        <span>Selecione um ou mais ítens abaixo</span>
-                    </legend>
-                    <ul className="items-grid">
-                        {items.map(item => (
-                            <li
-                                key={item.id}
-                                onClick={() => handleSelectItem(item.id)}
-                                className={selectedItems.includes(item.id) ? 'selected' : ''}
-
-                            >
-                                <img src={item.image_url} alt="teste" />
-                                <span>{item.title}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </fieldset>
-                <button type="submit">
-                    Cadastrar ponto de coleta
+                <button type='submit'>
+                    Cadastrar livro
                 </button>
             </form>
-
+            {messages &&
+                <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleCloseSnack} >
+                    <Alert severity="error" onClose={handleCloseSnack} >
+                        {messages}
+                    </Alert>
+                </Snackbar>
+            }
         </div>
     )
 }
 
-export default CreatePoint;
+
+const mapStateToProps = ({ books }: { books: IBooks }) => ({
+    book: books,
+});
+
+export default connect(mapStateToProps)(CreateEditBook);

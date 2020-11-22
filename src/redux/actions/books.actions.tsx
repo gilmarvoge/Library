@@ -25,6 +25,15 @@ export const deleteBook = (id: string) => ({
   id,
 });
 
+export const booksActions = {
+  getAllBooks,
+  addBook,
+  getBookById,
+  editBookById,
+  deleteBook,
+};
+
+
 
 
 

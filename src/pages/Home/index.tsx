@@ -2,7 +2,7 @@ import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { FiArrowLeft } from 'react-icons/fi';
-
+import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip'
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import clsx from 'clsx';
@@ -22,6 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
+import AddIcon from '@material-ui/icons/Add';
 
 import Header from 'components/Header';
 import { IBooks, IBook } from 'models'
@@ -45,6 +46,7 @@ interface Item {
 
 function Home(props: any) {
     const { books, dispatch } = props;
+    const { push } = useHistory();
     console.log("books ", books)
 
     return (
@@ -55,9 +57,9 @@ function Home(props: any) {
 
                 {books.map((book: IBook) => (
                     <Card key={book.id}
-                        className="card-root"
+
                         classes={{
-                            root: "card-root", // class name, e.g. `classes-nesting-root-x`
+                            root: 'card-root', // class name, e.g. `classes-nesting-root-x`
 
                         }}
 
@@ -66,20 +68,20 @@ function Home(props: any) {
 
                             action={
                                 <>
-                                 <Tooltip title="Editar livro" placement="bottom">
-                                    <IconButton aria-label="edit">
-                                        <EditIcon />
-                                    </IconButton>
+                                    <Tooltip title="Editar livro" placement="bottom">
+                                        <IconButton aria-label="edit" onClick={()=>push(`/edit/:${book.id}`)}>
+                                            <EditIcon />
+                                        </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Excluir livro" placement="bottom">
-                                    <IconButton aria-label="delete">
-                                        <DeleteIcon />
-                                    </IconButton>
+                                        <IconButton aria-label="delete">
+                                            <DeleteIcon />
+                                        </IconButton>
                                     </Tooltip>
                                 </>
                             }
                             title={book.title}
-                            subheader={book.autor}
+                            subheader={book.author}
                         />
                         <CardMedia
                             className="media"
@@ -92,15 +94,15 @@ function Home(props: any) {
                             </Typography>
                         </CardContent>
                         <CardActions disableSpacing>
-                        <Tooltip title="Alugar livro" placement="bottom">
-                            <IconButton aria-label="rent book">
-                                <BookmarkIcon />
-                            </IconButton>
+                            <Tooltip title="Alugar livro" placement="bottom">
+                                <IconButton aria-label="rent book">
+                                    <BookmarkIcon />
+                                </IconButton>
                             </Tooltip>
                             <Tooltip title="Mais Informações" placement="bottom">
-                            <IconButton aria-label="share">
-                                <VisibilityIcon />
-                            </IconButton>
+                                <IconButton aria-label="share">
+                                    <VisibilityIcon />
+                                </IconButton>
                             </Tooltip>
 
                         </CardActions>
@@ -110,7 +112,18 @@ function Home(props: any) {
                     </Card>
                 ))}
             </div>
+            <Tooltip title="Adicionar livro" placement="bottom">
+                <Fab color="primary"
+                    aria-label="add"
+                    classes={{
+                        root: 'fab', // class name, e.g. `classes-nesting-root-x`
 
+                    }}
+                    onClick={()=>push('/create')}
+                >
+                    <AddIcon />
+                </Fab>
+            </Tooltip>
 
         </div>
     )

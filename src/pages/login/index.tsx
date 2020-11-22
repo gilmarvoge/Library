@@ -1,82 +1,41 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { FiLogIn } from 'react-icons/fi';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
+import { FiLogIn } from 'react-icons/fi';
 import { Alert } from 'components';
 import api from 'services/api';
 import { login } from 'services/auth';
 import './styles.css';
 import logo from '../../assets/logo.svg';
 
-interface User {
-    id: number,
-    user: string,
-    password: string,
-}
-
 function Login(props: any) {
+    const { push } = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const [messages, setMessages] = useState('');
     const [openSnack, setOpenSnack] = useState(false);
 
-    const [formData, setFormData] = useState({
-        name: '',
-        password: '',
-    })
-
     function handleSubmitUser(data: any, event: any) {
-        event.preventDefault();
-        console.log('e ')
-        // e.preventDefault();
-        const { user, password } = data;
-        console.log('email ', user)
-        console.log('password ', password)
-
+        event.preventDefault();     
+        const { user, password } = data;  
         const response = api.filter(api => {
             if (api.user == user && api.password == password) {
                 login(String(api.id));
-                props.history.push('/');
+                push('/');
             }
             else {
                 setMessages('Usuário ou senha incorretos');
                 setOpenSnack(true);
             }
         });
-
-
-
-
-        // const { name, email, whatsapp } = formData;
-        // const uf = selectedUf;
-        // const city = selectedCity;
-        // const [latitude, longitude] = selectedPosition;
-        // const items = selectedItems;
-
-        // const data = {
-        //     name,
-        //     email,
-        //     whatsapp,
-        //     uf,
-        //     city,
-        //     latitude,
-        //     longitude,
-        //     items
-        // }
-        //await api.post('points', data) ;
-        // alert('Ponto de coleta criado!');
-        //history.push('/');
-
     }
 
     const handleCloseSnack = (event: any, reason: string) => {
-        if (reason === 'clickaway') {
+        if (reason === 'clickaway')
             return;
-        }
-
+        
         setOpenSnack(false);
     };
-
-
 
     return (
         <div id='page-login'>

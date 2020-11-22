@@ -1,29 +1,49 @@
 #page-home {
-  height: 100vh;
+  height: 96vh;
   width: 100%;
   margin: 0;
-  background: url("../../assets/home-background.svg")  750px;
+  background: url("../../assets/home-background.svg") 750px;
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: bottom right;
-
 }
 
 #page-home .content {
-  
   display: flex;
   align-items: center;
+  flex-direction: row;
 
-  flex-direction: column;
   /* align-items: flex-start; */
 }
 
+.card-root {
+  max-width: 240px;
+  max-height: 350px;
+  padding: 3px;
+}
 
-.card-root{
-  max-width: 145px,
+.card-title {
+  max-width: 200px;
+  max-height: 250px;
+}
+.card-author {
+  max-width: 200px;
+  max-height: 250px;
+}
+
+.card-description {
+  max-width: 200px;
+  max-height: 250px;
 }
 
 .media {
   height: 0;
-  padding-top: '56.25%',
+  padding-top: '56.25%';
+}
+
+.fab {
+  position: absolute !important;
+  bottom: 0;
+  margin-bottom: 20px!important;
+  margin-left: 20px!important;
 }

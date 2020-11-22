@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -20,9 +20,9 @@ export default function Header(props: any) {
     <div id='page-header'>
       <header>
         <div id='header-left'>
-          {location?.pathname != '/' &&
+          {location?.pathname !== '/' &&
             <Tooltip title="Voltar" placement="bottom">
-              <IconButton>
+              <IconButton onClick={()=>push('/')}>
                 <ArrowBackIcon fontSize='large' />
               </IconButton>
             </Tooltip>
