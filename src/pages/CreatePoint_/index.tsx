@@ -24,7 +24,7 @@ interface IBGEMunicipiosResponse {
     nome: string
 }
 
-const CreatePoint = () => {
+function CreatePoint() {
 
     const [items, setItems] = useState<Item[]>([]);
     const [ufs, setUfs] = useState<string[]>([]);
@@ -40,7 +40,7 @@ const CreatePoint = () => {
     const [selectedItems, setSelectedItems] = useState<number[]>([]);
     const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
 
-    const history=useHistory();
+    const history = useHistory();
 
 
     useEffect(() => {
