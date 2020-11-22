@@ -10,9 +10,9 @@ export const addBook = (book: IBook) => ({
   book,
 })
 
-export const getBookById = (id: string) => ({
+export const getBookById = (bookId: string) => ({
   type: booksContants.GET_BOOK_BY_ID,
-  id,
+  bookId,
 });
 
 export const editBookById = (book: IBook) => ({
@@ -20,9 +20,9 @@ export const editBookById = (book: IBook) => ({
   book,
 });
 
-export const deleteBook = (id: string) => ({
+export const deleteBook = (bookId: string) => ({
   type: booksContants.DELETE_BOOK,
-  id,
+  bookId,
 });
 
 export const booksActions = {

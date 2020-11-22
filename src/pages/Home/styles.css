@@ -11,14 +11,17 @@
 #page-home .content {
   display: flex;
   align-items: center;
+  justify-content: center;
   flex-direction: row;
 
   /* align-items: flex-start; */
 }
 
 .card-root {
-  max-width: 240px;
-  max-height: 350px;
+  /* max-width: 240px;
+  max-height: 350px; */
+  width: 240px;
+  height: 300px;
   padding: 3px;
 }
 

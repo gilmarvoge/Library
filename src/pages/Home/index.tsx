@@ -1,80 +1,69 @@
-import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { FiArrowLeft } from 'react-icons/fi';
 import Fab from '@material-ui/core/Fab';
-import Tooltip from '@material-ui/core/Tooltip'
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
+import Tooltip from '@material-ui/core/Tooltip';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
+import Snackbar from '@material-ui/core/Snackbar';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import FavoriteIcon from '@material-ui/icons/Favorite';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import BookmarkIcon from '@material-ui/icons/Bookmark';
 import AddIcon from '@material-ui/icons/Add';
-
 import Header from 'components/Header';
-import { IBooks, IBook } from 'models'
-//import { Map, TileLayer, Marker } from 'react-leaflet';
-//import { LeafletMouseEvent } from 'leaflet';
-//import axios from 'axios';
-//import api from '../../services/api';
+import { Alert } from 'components';
+import { booksActions } from 'redux/actions';
+import { IBooks, IBook } from 'models';
 
 import './styles.css';
-
-interface Props {
-    books: IBooks[];
-}
-
-interface Item {
-    id: number,
-    title: string,
-    image_url: string,
-}
-
 
 function Home(props: any) {
     const { books, dispatch } = props;
     const { push } = useHistory();
-    console.log("books ", books)
+    const [messages, setMessages] = useState('');
+
+    const getAllBooks = () => {
+        dispatch(booksActions.getAllBooks());
+    }
+
+    const deleteBook = (id: string) => {
+        dispatch(booksActions.deleteBook(id));
+    }
+
+    const rentBook = (id: string) => {
+        dispatch(booksActions.deleteBook(id));
+    }
+
+    useEffect(() => {
+        getAllBooks();
+    }, []);
 
     return (
         <div id='page-home'>
             <Header />
-
             <div className="content">
-
                 {books.map((book: IBook) => (
                     <Card key={book.id}
-
                         classes={{
                             root: 'card-root', // class name, e.g. `classes-nesting-root-x`
-
                         }}
-
                     >
                         <CardHeader
-
                             action={
                                 <>
                                     <Tooltip title="Editar livro" placement="bottom">
-                                        <IconButton aria-label="edit" onClick={()=>push(`/edit/:${book.id}`)}>
+                                        <IconButton aria-label="edit" onClick={() => push(`/edit/${book.id}`)}>
                                             <EditIcon />
                                         </IconButton>
                                     </Tooltip>
                                     <Tooltip title="Excluir livro" placement="bottom">
-                                        <IconButton aria-label="delete">
+                                        <IconButton aria-label="delete" onClick={() => deleteBook(book.id)}>
                                             <DeleteIcon />
                                         </IconButton>
                                     </Tooltip>
@@ -117,13 +106,19 @@ function Home(props: any) {
                     aria-label="add"
                     classes={{
                         root: 'fab', // class name, e.g. `classes-nesting-root-x`
-
                     }}
-                    onClick={()=>push('/create')}
+                    onClick={() => push('/create')}
                 >
                     <AddIcon />
                 </Fab>
             </Tooltip>
+            {messages &&
+                <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleCloseSnack} >
+                    <Alert severity="error" onClose={handleCloseSnack} >
+                        {messages}
+                    </Alert>
+                </Snackbar>
+            }
 
         </div>
     )

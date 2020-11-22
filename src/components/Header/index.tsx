@@ -1,18 +1,22 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { logoff } from 'services/auth'
+import { userActions } from 'redux/actions';
+import { logoff } from 'services/auth';
 import logo from '../../assets/logo.svg';
 import './styles.css';
 
-export default function Header(props: any) {
+ function Header(props: any) {
+   const{dispatch}=props;
   let { location, push } = useHistory();
 
-  const logOut = () => {
+  const signOut = () => {
     logoff();
+    dispatch(userActions.logoutUser());
     push('/login');
   }
 
@@ -36,7 +40,7 @@ export default function Header(props: any) {
         </div>
         <div id='header-right'>
           <Tooltip title="Sair" placement="bottom">
-            <IconButton onClick={logOut} >
+            <IconButton onClick={signOut} >
               <ExitToAppIcon fontSize='large' />
             </IconButton>
           </Tooltip>
@@ -45,5 +49,8 @@ export default function Header(props: any) {
     </div>
   )
 }
+
+export default connect()(Header);
+
 
 

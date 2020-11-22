@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -7,33 +7,53 @@ import { v4 as uuidv4 } from 'uuid';
 import { Alert } from 'components';
 
 import Header from 'components/Header';
-import { IBooks } from 'models';
+import { IBooks, IBook, IUser } from 'models';
 import { booksActions } from 'redux/actions';
 import './styles.css';
 
+interface ParamTypes {
+    bookId: string
+}
 
 function CreateEditBook(props: any) {
     const { push } = useHistory();
-    const { dispatch } = props;
-    console.log('propsr', props)
-    const { register, handleSubmit, errors } = useForm();
+    const { bookId } = useParams<ParamTypes>();
+    const { dispatch, books, user } = props;
     const [messages, setMessages] = useState('');
-    const [editPage, setEditPage] = useState(false);
+    const [bookToEdit, setBookToEdit] = useState<IBook>();
     const [openSnack, setOpenSnack] = useState(false);
+    const { register, handleSubmit, errors } = useForm();
+    console.log('useeeeee',user)
+    useEffect(() => {
+        getParamBookId();
+    }, []);
 
-    function handleSubmitBook(data: any, event: any) {
+    useEffect(() => {
+    }, [bookToEdit]);
+
+    const getParamBookId = () => {
+        if (bookId !== '') {
+            const book = books.filter((book: IBook) => book.id === bookId);
+            setBookToEdit(book[0]);
+        }
+    }
+
+    const handleSubmitBook = (data: any, event: any) => {
         console.log('entrou enviar')
 
         event.preventDefault();
         const { title, author, description, image_url } = data;
 
-        if (title != '' && author != '' && description != '' && image_url) {
-            console.log('data enviar', data)
-
-            const id = uuidv4()
-            const book = { id, author, title, description, image_url };
-            dispatch(booksActions.addBook(book));
-
+        if (title !== '' && author !== '' && description !== '' && image_url) {
+            if (bookId && bookId !== '') {
+                const book = { id: bookId, author, title, description, image_url, userRentIdt: 'ss' };
+                dispatch(booksActions.editBookById(book));
+            } else {
+                const id = uuidv4()
+                const book = { id, author, title, description, image_url };
+                dispatch(booksActions.addBook(book));
+            }
+            push('/');
         }
         else {
             setMessages('Campos não preenchidos');
@@ -52,11 +72,12 @@ function CreateEditBook(props: any) {
         <div id='page-createedit-book'>
             <Header />
             <form onSubmit={handleSubmit(handleSubmitBook)}>
-                <h1>Cadastro do livro</h1>
+                <h1>{bookId && bookId !== '' ? 'Editar livro' : 'Cadastro do livro'}</h1>
                 <fieldset>
                     <div className='field'>
                         <label htmlFor='name'>Nome</label>
                         <input
+                            defaultValue={bookToEdit?.title}
                             type='text'
                             name='title'
                             id='title'
@@ -67,6 +88,7 @@ function CreateEditBook(props: any) {
                     <div className='field'>
                         <label htmlFor='name'>Autor</label>
                         <input
+                            defaultValue={bookToEdit?.author}
                             type='text'
                             name='author'
                             id='author'
@@ -77,6 +99,7 @@ function CreateEditBook(props: any) {
                     <div className='field'>
                         <label htmlFor='name'>Descrição</label>
                         <input
+                            defaultValue={bookToEdit?.description}
                             type='text'
                             name='description'
                             id='description'
@@ -87,6 +110,7 @@ function CreateEditBook(props: any) {
                     <div className='field'>
                         <label htmlFor='name'>Link da imagem</label>
                         <input
+                            defaultValue={bookToEdit?.image_url}
                             type='text'
                             name='image_url'
                             id='image_url'
@@ -96,7 +120,7 @@ function CreateEditBook(props: any) {
                     </div>
                 </fieldset>
                 <button type='submit'>
-                    Cadastrar livro
+                    {bookId && bookId !== '' ? 'Salvar livro' : 'Cadastrar livro'}
                 </button>
             </form>
             {messages &&
@@ -107,12 +131,12 @@ function CreateEditBook(props: any) {
                 </Snackbar>
             }
         </div>
-    )
+    ) 
 }
 
-
-const mapStateToProps = ({ books }: { books: IBooks }) => ({
-    book: books,
+const mapStateToProps = ({ books, authentication }: { books: IBooks, authentication: IUser }) => ({
+    books: books,
+    user: authentication,
 });
 
 export default connect(mapStateToProps)(CreateEditBook);

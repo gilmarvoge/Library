@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, BrowserRouter, Switch, Redirect, RouteProps } from 'react-router-dom';
 import { isAuthenticated } from 'services/auth';
 import Home from 'pages/Home';
-//import CreatePoint from 'pages/CreatePoint';
 import Login from 'pages/Login';
 import CreateEditBook from 'pages/CreateBook';
 import NotFound from 'pages/NotFound';
@@ -31,8 +30,7 @@ function Routes() {
         <PrivateRoute exact path='/' component={Home} />
         <PrivateRoute exact path='/create-edit' component={Home} />
         <PrivateRoute exact path='/edit/:bookId' component={CreateEditBook} />
-        <PrivateRoute exact path="/create" component={CreateEditBook} />
-        {/* <PrivateRoute path='/app' component={CreatePoint} /> */}
+        <PrivateRoute exact path="/create" component={CreateEditBook} />   
         <Route path='/login' component={Login} />
         <Route path='*' component={NotFound} />
       </Switch>
