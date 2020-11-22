@@ -1,7 +1,30 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { connect } from 'react-redux';
 import { FiArrowLeft } from 'react-icons/fi';
-import { Header } from 'components';
+
+import Tooltip from '@material-ui/core/Tooltip'
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+import { red } from '@material-ui/core/colors';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import BookmarkIcon from '@material-ui/icons/Bookmark';
+
+import Header from 'components/Header';
+import { IBooks, IBook } from 'models'
 //import { Map, TileLayer, Marker } from 'react-leaflet';
 //import { LeafletMouseEvent } from 'leaflet';
 //import axios from 'axios';
@@ -9,6 +32,9 @@ import { Header } from 'components';
 
 import './styles.css';
 
+interface Props {
+    books: IBooks[];
+}
 
 interface Item {
     id: number,
@@ -17,109 +43,81 @@ interface Item {
 }
 
 
-function Home() {
-
-    const [items, setItems] = useState<Item[]>([]);
-    const [ufs, setUfs] = useState<string[]>([]);
-    const [initialPosition, setInitialPosition] = useState<[number, number]>([0, 0]);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        whatsapp: '',
-    })
-    const [selectedUf, setsSelectedUf] = useState('0');
-    const [cities, setCities] = useState<string[]>([]);
-    const [selectedCity, setSelectedCity] = useState('0');
-    const [selectedItems, setSelectedItems] = useState<number[]>([]);
-    const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0, 0]);
-
-    const history = useHistory();
-
-
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(position => {
-            const { latitude, longitude } = position.coords;
-
-            setInitialPosition([latitude, longitude]);
-        })
-    }, []);
-
-    useEffect(() => {
-        // api.get('items').then(response => {
-        //     setItems(response.data);
-        // })
-    }, []);
-
- 
-
-    function handleSelectedUf(event: ChangeEvent<HTMLSelectElement>) {
-        const uf = event.target.value;
-        setsSelectedUf(uf);
-    }
-
-    function handleSelectedCity(event: ChangeEvent<HTMLSelectElement>) {
-        const municipio = event.target.value;
-        setSelectedCity(municipio);
-        console.log(municipio)
-    }
-
-    // function handleMapClick(event: LeafletMouseEvent) {
-    //     setSelectedPosition([
-    //         event.latlng.lat,
-    //         event.latlng.lng
-    //     ])
-    // }
-
-    function handleInputChange(event: ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target;
-
-        setFormData({ ...formData, [name]: value })
-    }
-
-    function handleSelectItem(id: number) {
-        const alreadySelected = selectedItems.findIndex(item => item === id);
-
-        if (alreadySelected >= 0) {
-            const filteredItems = selectedItems.filter(item => item !== id);
-            setSelectedItems(filteredItems);
-        } else {
-            setSelectedItems([...selectedItems, id]);
-        }
-    }
-
-    async function handleSubmit(event: FormEvent) {
-        event.preventDefault();
-
-        const { name, email, whatsapp } = formData;
-        const uf = selectedUf;
-        const city = selectedCity;
-        const [latitude, longitude] = selectedPosition;
-        const items = selectedItems;
-
-        const data = {
-            name,
-            email,
-            whatsapp,
-            uf,
-            city,
-            latitude,
-            longitude,
-            items
-        }
-        //await api.post('points', data);
-        alert('Ponto de coleta criado!');
-        history.push('/');
-
-    }
+function Home(props: any) {
+    const { books, dispatch } = props;
+    console.log("books ", books)
 
     return (
         <div id='page-home'>
-            <Header/>
-        
-           
+            <Header />
+
+            <div className="content">
+
+                {books.map((book: IBook) => (
+                    <Card key={book.id}
+                        className="card-root"
+                        classes={{
+                            root: "card-root", // class name, e.g. `classes-nesting-root-x`
+
+                        }}
+
+                    >
+                        <CardHeader
+
+                            action={
+                                <>
+                                 <Tooltip title="Editar livro" placement="bottom">
+                                    <IconButton aria-label="edit">
+                                        <EditIcon />
+                                    </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Excluir livro" placement="bottom">
+                                    <IconButton aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                    </Tooltip>
+                                </>
+                            }
+                            title={book.title}
+                            subheader={book.autor}
+                        />
+                        <CardMedia
+                            className="media"
+                            src={book.image_url}
+                        // title="Paella dish"
+                        />
+                        <CardContent>
+                            <Typography variant="body2" color="textSecondary" component="p">
+                                {book.image_url}
+                            </Typography>
+                        </CardContent>
+                        <CardActions disableSpacing>
+                        <Tooltip title="Alugar livro" placement="bottom">
+                            <IconButton aria-label="rent book">
+                                <BookmarkIcon />
+                            </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Mais Informações" placement="bottom">
+                            <IconButton aria-label="share">
+                                <VisibilityIcon />
+                            </IconButton>
+                            </Tooltip>
+
+                        </CardActions>
+                        {/* <img src={book.image_url} alt="teste" />
+                        <span>{ }</span> */}
+
+                    </Card>
+                ))}
+            </div>
+
 
         </div>
     )
 }
 
-export default Home;
+const mapStateToProps = ({ books }: { books: IBooks, }) => ({
+    books: books,
+
+});
+export default connect(mapStateToProps)(Home);

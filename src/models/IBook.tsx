@@ -4,5 +4,5 @@ export interface IBook {
   autor: string;
   title: string;
   description: number;
-  image?: string;
+  image_url?: string;
 }

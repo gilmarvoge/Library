@@ -1,36 +1,28 @@
 #page-header {
   width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
 }
 
 #page-header header {
   margin-top: 28px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  margin: 25px;
 }
 
 #header-right {
-  margin-top: 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 #header-left {
-  width: 30%;
-  background-color: blue;
-  margin-top: 28px;
+  width: 20%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#header-left {
-  width: 30%;
-  background-color: blue;
-  margin-top: 28px;
+#header-logo {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,4 +44,5 @@
 #page-header header span {
   color: var(--title-color);
   font-weight: bold;
+  font-size: 2rem;
 }

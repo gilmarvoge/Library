@@ -31,8 +31,3 @@ h6 {
   color: var(--title-color);
   font-family: Ubuntu;
 }
-
-.icons {
-  vertical-align: middle;
-  size: 10rem;
-}
