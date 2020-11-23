@@ -2,13 +2,13 @@
 export const users = [
   {
     id: 1,
-    user: "gilmar",
+    user: "hardware",
     password: "12345",
   },
   {
     id: 2,
-    user: "soft",
-    password: "012345",
+    user: "software",
+    password: "56789",
   }
 ];
 
