@@ -43,12 +43,11 @@ function Login(props: any) {
 
     return (
         <div id='page-login'>
-            <form onSubmit={handleSubmit(handleSubmitUser)}>
+            <form id='formuser' onSubmit={handleSubmit(handleSubmitUser)}>
                 <header>
                     <img src={logo} alt='Biblioteca' />
                     <h1>Login</h1>
                 </header>
-
                 <fieldset>
                     <div className='field'>
                         <label htmlFor='name'>Usuario</label>
@@ -60,7 +59,6 @@ function Login(props: any) {
                         />
                         {errors.user && errors.user?.message}
                     </div>
-
                     <div className='field'>
                         <label htmlFor='name'>Senha</label>
                         <input
@@ -72,7 +70,7 @@ function Login(props: any) {
                         {errors.password && errors.password?.message}
                     </div>
                 </fieldset>
-                <button type='submit'>
+                <button type='submit'> 
                     <span>
                         <FiLogIn />
                     </span>
