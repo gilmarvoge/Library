@@ -1,11 +1,12 @@
 import React from "react";
-import Enzyme from 'enzyme';
-import { users } from 'services/mocks';
-import { Provider, LocalizeProvider } from 'react-redux';
+//import { render } from '@testing-library/react';
+//import Enzyme from 'enzyme';
+//import { users } from 'services/mocks';
+
+import { Provider } from 'react-redux';
 import { Router } from 'react-router-dom';
 import store from 'store';
 import renderer from 'react-test-renderer';
-import { createMemoryHistory } from 'history'
 import Login from 'pages/Login';
 
 
@@ -19,11 +20,12 @@ describe("<Login />", () => {
         </Router>
       </Provider>
     ).root;
-    const button  =component.findByType('button').onClick(); // step 1 above   
-    //buttonElement.simulate('click'); // step 2
-    //expect(tree).toMatchSnapshot();
+   
   });
 
+
+//   const linkElement = screen.getByText(/learn react/i);
+// expect(linkElement).toBeInTheDocument();
   // const testValues = {
   //   user: 'FOO',
   //   password: 'BAZ',
