@@ -13,7 +13,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-direction: row;
+  flex-direction: column;
   width: 80%;
   margin: auto;
 }
@@ -30,19 +30,26 @@
 .card-header-action {
   flex: 1!important;
   justify-content: flex-end !important;
+  margin-top: -12px!important;
 }
 
 .card-header-title {
-  overflow: hidden;
-  height: 50px;
-  white-space:nowrap!important;
   font-size: 18px !important;
+  width: 120px;  
+  height: 50px;
+  white-space: wrap !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .card-header-subheader {
   overflow: hidden;
+  width: 120px;
   height: 50px;
+  white-space: nowrap !important;
   font-size: 14px !important;
   text-overflow: ellipsis;
 }
@@ -56,13 +63,10 @@
 
 .media {
   display: block;
-  max-width:150px;
-  max-height:250px;
+  max-width: 150px;
+  max-height: 250px;
   width: auto;
   height: auto;
-}
-.card-actions{
-
 }
 
 .fab {

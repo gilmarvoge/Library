@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
 import { FiLogIn } from 'react-icons/fi';
 import { Alert } from 'components';
-import api from 'services/api';
+import {users as loginUsers} from 'services/mocks';
 import { userActions } from 'redux/actions';
 import { login } from 'services/auth';
 import './styles.css';
@@ -21,7 +21,7 @@ function Login(props: any) {
     function handleSubmitUser(data: any, event: any) {
         event.preventDefault();
         const { user, password } = data;
-        api.filter(api => {
+        loginUsers.filter(api => {
             if (api.user === user && api.password === password) {
                 dispatch(userActions.setUserState(String(api.id)));
                 login(String(api.id));

@@ -1,11 +1,7 @@
 import { rentsContants } from "../constants";
+import {rents as initialRents} from 'services/mocks'
 
-const rentState = [{
-  book_id: '',
-  user_id: '',
-}];
-
-const rents = (state = rentState, action: any = {}) => {
+const rents = (state = initialRents, action: any = {}) => {
   switch (action.type) {
     case rentsContants.ADD_BOOK_RENT:
       return [...state, action.rent];

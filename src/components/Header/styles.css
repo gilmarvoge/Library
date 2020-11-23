@@ -6,7 +6,7 @@
   margin-top: 28px;
   display: flex;
   justify-content: space-between;
-  margin: 25px;
+  margin: 25px 25px 0;
 }
 
 #header-right {
