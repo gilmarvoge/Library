@@ -1,5 +1,6 @@
 #page-home {
   height: 96vh;
+  max-height: 96vh;
   width: 100%;
   margin: 0;
   background: url("../../assets/home-background.svg") 750px;
@@ -13,35 +14,55 @@
   align-items: center;
   justify-content: center;
   flex-direction: row;
-
-  /* align-items: flex-start; */
+  width: 80%;
+  margin: auto;
 }
 
 .card-root {
-  /* max-width: 240px;
-  max-height: 350px; */
-  width: 240px;
-  height: 300px;
-  padding: 3px;
+  width: 200px;
+  height: 350px;
 }
 
-.card-title {
-  max-width: 200px;
-  max-height: 250px;
-}
-.card-author {
-  max-width: 200px;
-  max-height: 250px;
+.card-header-root {
+  padding: 16px 16px 0 !important;
 }
 
-.card-description {
-  max-width: 200px;
-  max-height: 250px;
+.card-header-action {
+  flex: 1!important;
+  justify-content: flex-end !important;
+}
+
+.card-header-title {
+  overflow: hidden;
+  height: 50px;
+  white-space:nowrap!important;
+  font-size: 18px !important;
+  text-overflow: ellipsis;
+}
+
+.card-header-subheader {
+  overflow: hidden;
+  height: 50px;
+  font-size: 14px !important;
+  text-overflow: ellipsis;
+}
+
+.card-content-root {
+  display: flex;
+  justify-content: center;
+  padding: 0 !important;
+  height: 170px;
 }
 
 .media {
-  height: 0;
-  padding-top: '56.25%';
+  display: block;
+  max-width:150px;
+  max-height:250px;
+  width: auto;
+  height: auto;
+}
+.card-actions{
+
 }
 
 .fab {
@@ -49,4 +70,12 @@
   bottom: 0;
   margin-bottom: 20px!important;
   margin-left: 20px!important;
+}
+
+.rent-icon-sucess {
+  color: #4caf50 !important;
+}
+
+.rent-icon-warning {
+  color: #ff9800 !important;
 }

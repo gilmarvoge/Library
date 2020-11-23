@@ -5,18 +5,15 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import { userActions } from 'redux/actions';
 import { logoff } from 'services/auth';
 import logo from '../../assets/logo.svg';
 import './styles.css';
 
- function Header(props: any) {
-   const{dispatch}=props;
+function Header(props: any) {
   let { location, push } = useHistory();
 
   const signOut = () => {
     logoff();
-    dispatch(userActions.logoutUser());
     push('/login');
   }
 
@@ -26,7 +23,7 @@ import './styles.css';
         <div id='header-left'>
           {location?.pathname !== '/' &&
             <Tooltip title="Voltar" placement="bottom">
-              <IconButton onClick={()=>push('/')}>
+              <IconButton onClick={() => push('/')}>
                 <ArrowBackIcon fontSize='large' />
               </IconButton>
             </Tooltip>

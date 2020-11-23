@@ -1,8 +1,8 @@
 import { userConstants } from '../constants';
 
-const setUserState = (user:string) => ({
+const setUserState = ( id:string) => ({
   type: userConstants.USER_SAVE,
-  user
+  id
 });
 
 const logoutUser = () => ({

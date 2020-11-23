@@ -21,11 +21,11 @@ function Login(props: any) {
     function handleSubmitUser(data: any, event: any) {
         event.preventDefault();
         const { user, password } = data;
-        const response = api.filter(api => {
+        api.filter(api => {
             if (api.user === user && api.password === password) {
                 dispatch(userActions.setUserState(String(api.id)));
-                login(String(api.id));     
-                setMessages('');          
+                login(String(api.id));
+                setMessages('');
                 push('/');
             }
             else {
@@ -33,13 +33,11 @@ function Login(props: any) {
                 setOpenSnack(true);
             }
         });
-        console.log('response', response)
     }
 
     const handleCloseSnack = (event: any, reason: string) => {
         if (reason === 'clickaway')
             return;
-
         setOpenSnack(false);
     };
 

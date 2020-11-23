@@ -1,0 +1,5 @@
+export const rentsContants = {
+  GET_BOOKS_RENT: 'GET_BOOKS_RENT',
+  ADD_BOOK_RENT: 'ADD_BOOK_RENT',
+  DELETE_BOOK_RENT: 'DELETE_BOOK_RENT',
+}

@@ -5,7 +5,6 @@ import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
 import { v4 as uuidv4 } from 'uuid';
 import { Alert } from 'components';
-
 import Header from 'components/Header';
 import { IBooks, IBook, IUser } from 'models';
 import { booksActions } from 'redux/actions';
@@ -18,35 +17,26 @@ interface ParamTypes {
 function CreateEditBook(props: any) {
     const { push } = useHistory();
     const { bookId } = useParams<ParamTypes>();
-    const { dispatch, books, user } = props;
+    const { dispatch, books } = props;
     const [messages, setMessages] = useState('');
     const [bookToEdit, setBookToEdit] = useState<IBook>();
     const [openSnack, setOpenSnack] = useState(false);
     const { register, handleSubmit, errors } = useForm();
-    console.log('useeeeee',user)
-    useEffect(() => {
-        getParamBookId();
-    }, []);
 
     useEffect(() => {
-    }, [bookToEdit]);
-
-    const getParamBookId = () => {
         if (bookId !== '') {
             const book = books.filter((book: IBook) => book.id === bookId);
             setBookToEdit(book[0]);
         }
-    }
+    }, [bookId,books]);
 
     const handleSubmitBook = (data: any, event: any) => {
-        console.log('entrou enviar')
-
         event.preventDefault();
         const { title, author, description, image_url } = data;
 
         if (title !== '' && author !== '' && description !== '' && image_url) {
             if (bookId && bookId !== '') {
-                const book = { id: bookId, author, title, description, image_url, userRentIdt: 'ss' };
+                const book = { id: bookId, author, title, description, image_url };
                 dispatch(booksActions.editBookById(book));
             } else {
                 const id = uuidv4()
@@ -64,7 +54,6 @@ function CreateEditBook(props: any) {
     const handleCloseSnack = (event: any, reason: string) => {
         if (reason === 'clickaway')
             return;
-
         setOpenSnack(false);
     };
 
@@ -131,7 +120,7 @@ function CreateEditBook(props: any) {
                 </Snackbar>
             }
         </div>
-    ) 
+    )
 }
 
 const mapStateToProps = ({ books, authentication }: { books: IBooks, authentication: IUser }) => ({

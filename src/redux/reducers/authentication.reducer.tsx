@@ -5,18 +5,15 @@ const userState = {
 };
 
 const authentication = (state = userState, action: any = {}) => {
-  let { user } = action;
-
+  let { id } = action;
   switch (action.type) {
     case userConstants.USER_SAVE:
-      console.log('reducer save user ');
       return {
-        user
+        id
       }
-
     case userConstants.USER_SIGNOUT:
       return {};
-    default:     
+    default:
       return state
   }
 }
