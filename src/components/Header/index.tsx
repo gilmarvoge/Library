@@ -10,8 +10,7 @@ import logo from '../../assets/logo.svg';
 import './styles.css';
 
 function Header(props: any) {
-  const {search} =props;
-  console.log('search', search)
+  const { search, dispatch } = props;
   let { location, push } = useHistory();
 
   const signOut = () => {
@@ -37,7 +36,9 @@ function Header(props: any) {
          </span>
           </div>
         </div>
-        {search}
+        <div id='header-flex'>
+          {search}
+        </div>
         <div id='header-flex' >
           <Tooltip title='Sair' placement='bottom'>
             <IconButton onClick={signOut} >

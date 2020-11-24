@@ -1,4 +1,3 @@
 export * from './api';
-export * from './apiConnections';
+export * from './settings';
 export * from './auth';
-export * from './mocks';

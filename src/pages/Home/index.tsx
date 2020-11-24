@@ -3,39 +3,53 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {
   Fab, Grid, Tooltip, Card, CardHeader, Snackbar,
-  CardContent, CardActions,IconButton 
+  CardContent, CardActions, IconButton
 } from '@material-ui/core';
 import {
-  Visibility as VisibilityIcon, Delete as DeleteIcon, 
+  Visibility as VisibilityIcon, Delete as DeleteIcon,
   MenuBook as MenuBookIcon, Edit as EditIcon, Add as AddIcon
 } from '@material-ui/icons';
 import Dialogs from 'components/Dialogs';
 import Header from 'components/Header';
 import Search from 'components/Search';
 import { Alert } from 'components';
-import {fetchBooks} from 'services';
-import { booksActions, rentsActions } from 'redux/actions';
-import { IBooks, IBook, IUser, IRent, IRents } from 'models';
+import { getBooks, deleteBook, getUserIdStorage, getRents, addRent, deleteRent } from 'services';
+import { setDeletedBook, setAllRents, setAllBooks, setDeletedRent, setRent } from 'redux/actions';
+import { IBooks, IBook, IRent, IRents } from 'models';
 import './styles.css';
 
 function Home(props: any) {
   const { books, rents, dispatch, authentication } = props;
   const { push } = useHistory();
   const [openSnack, setOpenSnack] = useState(false);
+  const [userId, setUserId] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [showMore, setShowMore] = useState({ open: false, book: {} });
   const [snackType, setSnackType] = useState('');
   const [messages, setMessages] = useState('');
 
-  useEffect(() => {
-    fetchBooks().then(response => {
-    dispatch(booksActions.getAllBooks(response.data));
-    })
-  }, [dispatch]);
+  const getAllBooks = async () => {
+    const responseBooks = await getBooks();
+    if (responseBooks.data.length)
+      dispatch(setAllBooks(responseBooks.data));
 
-  const deleteBook = (id: string, bookOwnerRent: string) => {
-    if (bookOwnerRent === 'available' || bookOwnerRent === 'myne')
-      dispatch(booksActions.deleteBook(id));
+    const response = await getRents();
+    if (response.data.length)
+      dispatch(setAllRents(response.data));
+
+    const user_id = await getUserIdStorage();
+    setUserId(String(user_id)); 
+  }
+  useEffect(() => {
+    getAllBooks();
+  }, [userId]);
+
+  const handleDeleteBook = async (id: string, bookOwnerRent: string) => {
+    if (bookOwnerRent === 'available' || bookOwnerRent === 'mine') {
+      const response = await deleteBook(id);
+      if (response.data.length)
+        dispatch(setDeletedBook(id));
+    }
     else {
       setSnackType('warning');
       setOpenSnack(true);
@@ -43,8 +57,8 @@ function Home(props: any) {
     }
   }
 
-  const editBook = (id: string, bookOwnerRent: string) => {
-    if (bookOwnerRent === 'available' || bookOwnerRent === 'myne')
+  const handleEditBook = (id: string, bookOwnerRent: string) => {
+    if (bookOwnerRent === 'available' || bookOwnerRent === 'mine')
       push(`/edit/${id}`);
     else {
       setSnackType('warning');
@@ -58,7 +72,7 @@ function Home(props: any) {
     if (rentedBooks.length) {
       const rented = rents.filter((rent: IRent) => rent.book_id === bookId && rent.user_id === authentication.id)
       if (rented.length)
-        return 'myne';
+        return 'mine';
       else
         return 'other';
     }
@@ -66,19 +80,26 @@ function Home(props: any) {
       return 'available';
   }
 
-  const rentBook = (book: IBook, bookOwnerRent: string) => {
+  const handleRentBook = async (book: IBook, bookOwnerRent: string) => {
     if (bookOwnerRent === 'available') {
-      const rentBook = { book_id: book.id, user_id: authentication.id }
-      dispatch(rentsActions.addRent(rentBook));
-      setSnackType('success');
-      setOpenSnack(true);
-      setMessages(`Você alugou o livro ${book.title}`);
+      const rentBook = { book_id: String(book.id), user_id: userId }
+      const response = await addRent(rentBook);
+      if (response.data.length) {
+        dispatch(setRent(rentBook));
+        setSnackType('success'); 
+        setOpenSnack(true);
+        setMessages(`Você alugou o livro ${book.title}`);
+      }
     }
-    else if (bookOwnerRent === 'myne') {
-      dispatch(rentsActions.deleteRentByBookId(book.id));
-      setSnackType('success');
-      setOpenSnack(true);
-      setMessages(`Você devolveu o livro ${book.title}`)
+    else if (bookOwnerRent === 'mine') {
+      const rent = rents.filter((rent: IRent) => rent.book_id === book.id);
+      const response = await deleteRent(rent.id);
+      if (response.data.length) {
+        dispatch(setDeletedRent(rent.id));
+        setSnackType('success');
+        setOpenSnack(true);
+        setMessages(`Você devolveu o livro ${book.title}`)
+      }
     }
     else {
       setSnackType('warning');
@@ -100,12 +121,12 @@ function Home(props: any) {
       <div className='content'>
         <Grid container spacing={2} justify='center' >
           {(filteredBooks.length ? filteredBooks : books).map((book: IBook) => {
-            const bookOwnerRent = filterHasBooksRented(book.id);
+            const bookOwnerRent = filterHasBooksRented(String(book.id));
             return (
               <Grid item key={book.id}>
                 <Card
                   classes={{
-                    root: 'card-root', // class name, e.g. `classes-nesting-root-x`
+                    root: 'card-root',
                   }}
                 >
                   <CardHeader
@@ -118,13 +139,13 @@ function Home(props: any) {
                     action={
                       <>
                         <Tooltip title='Excluir livro' placement='bottom'>
-                          <IconButton aria-label='delete' onClick={() => deleteBook(book.id, bookOwnerRent)}>
+                          <IconButton aria-label='delete' onClick={() => handleDeleteBook(String(book.id), bookOwnerRent)}>
                             <DeleteIcon />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title='Editar livro' placement='bottom'>
-                          <IconButton aria-label='edit' onClick={() => editBook(book.id, bookOwnerRent)}>
-                            <EditIcon />
+                          <IconButton aria-label='edit' onClick={() => handleEditBook(String(book.id), bookOwnerRent)}>
+                            <EditIcon /> 
                           </IconButton>
                         </Tooltip>
                       </>
@@ -145,15 +166,15 @@ function Home(props: any) {
                     }}
                     disableSpacing
                   >
-                    <Tooltip title={`${bookOwnerRent === 'myne' ?
+                    <Tooltip title={`${bookOwnerRent === 'mine' ?
                       'Livro alugado' : bookOwnerRent === 'other' ?
                         'Livro não disponível' : 'Alugar livro'}`}
                       placement='bottom'
                     >
-                      <IconButton aria-label='rent book' onClick={() => rentBook(book, bookOwnerRent)}>
+                      <IconButton aria-label='rent book' onClick={() => handleRentBook(book, bookOwnerRent)}>
                         <MenuBookIcon
                           classes={{
-                            root: `${bookOwnerRent === 'myne' ?
+                            root: `${bookOwnerRent === 'mine' ?
                               'rent-icon-sucess' : bookOwnerRent === 'other' ?
                                 'rent-icon-warning' : ''}`
                           }}
@@ -195,9 +216,8 @@ function Home(props: any) {
   )
 }
 
-const mapStateToProps = ({ books, authentication, rents }: { books: IBooks, authentication: IUser, rents: IRents }) => ({
-  books: books,
-  authentication: authentication,
+const mapStateToProps = ({ books, rents }: { books: IBooks, rents: IRents }) => ({
+  books,
   rents
 });
 

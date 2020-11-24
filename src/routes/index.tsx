@@ -1,27 +1,10 @@
 import React from 'react';
-import { Route, BrowserRouter, Switch, Redirect, RouteProps } from 'react-router-dom';
-import { isAuthenticated } from 'services/auth';
+import { Route, BrowserRouter, Switch} from 'react-router-dom';
+import {PrivateRoute} from './PrivateRoutes';
 import Home from 'pages/Home';
 import Login from 'pages/Login';
 import CreateEditBook from 'pages/CreateBook';
 import NotFound from 'pages/NotFound';
-
-interface PrivateRouteProps extends Omit<RouteProps, 'component'> {
-  component: React.ElementType;
-}
-
-const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      isAuthenticated() ? (
-        <Component {...props} />
-      ) : (
-          <Redirect to={{ pathname: '/login', state: { from: props.location } }} />
-        )
-    }
-  />
-);
 
 function Routes() {
   return (

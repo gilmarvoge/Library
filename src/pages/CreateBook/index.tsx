@@ -3,11 +3,11 @@ import { useHistory, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
-import { v4 as uuidv4 } from 'uuid';
 import { Alert } from 'components';
 import Header from 'components/Header';
 import { IBooks, IBook, IUser } from 'models';
-import { booksActions } from 'redux/actions';
+import { addBook, editBook } from 'services';
+import { setBook, setEditedBook } from 'redux/actions';
 import './styles.css';
 
 interface ParamTypes {
@@ -28,20 +28,21 @@ function CreateEditBook(props: any) {
             const book = books.filter((book: IBook) => book.id === bookId);
             setBookToEdit(book[0]);
         }
-    }, [bookId,books]);
+    }, [bookId, books]);
 
-    const handleSubmitBook = (data: any, event: any) => {
+    const handleSubmitBook = async (data: any, event: any) => {
         event.preventDefault();
         const { title, author, description, image_url } = data;
-
+        const book = { author, title, description, image_url };
         if (title !== '' && author !== '' && description !== '' && image_url) {
             if (bookId && bookId !== '') {
-                const book = { id: bookId, author, title, description, image_url };
-                dispatch(booksActions.editBookById(book));
+                let response = await editBook(bookId, book);
+                if (response.data.length)
+                    dispatch(setEditedBook(bookId, book));
             } else {
-                const id = uuidv4()
-                const book = { id, author, title, description, image_url };
-                dispatch(booksActions.addBook(book));
+                let response = await addBook(book);
+                if (response.data.length)
+                    dispatch(setBook(book));
             }
             push('/');
         }

@@ -1,12 +1,12 @@
 import { booksContants } from 'redux/constants';
 import { IBook, IBooks } from 'models';
 
-export const getAllBooks = (books:IBooks) => ({
-  type: booksContants.GET_ALL_BOOKS,
+export const setAllBooks = (books: IBooks) => ({
+  type: booksContants.SET_ALL_BOOKS,
   books
 })
 
-export const addBook = (book: IBook) => ({
+export const setBook = (book: IBook) => ({
   type: booksContants.ADD_BOOK,
   book,
 })
@@ -16,22 +16,23 @@ export const getBookById = (bookId: string) => ({
   bookId,
 });
 
-export const editBookById = (book: IBook) => ({
+export const setEditedBook = (id: string, book: IBook) => ({
   type: booksContants.EDIT_BOOK_BY_ID,
+  id,
   book,
 });
 
-export const deleteBook = (bookId: string) => ({
+export const setDeletedBook = (bookId: string) => ({
   type: booksContants.DELETE_BOOK,
   bookId,
 });
 
 export const booksActions = {
-  getAllBooks,
-  addBook,
+  setAllBooks,
+  setBook,
   getBookById,
-  editBookById,
-  deleteBook,
+  setEditedBook,
+  setDeletedBook,
 };
 
 

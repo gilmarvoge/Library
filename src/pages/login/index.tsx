@@ -5,29 +5,26 @@ import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
 import { FiLogIn } from 'react-icons/fi';
 import { Alert } from 'components';
-import { userActions } from 'redux/actions';
-import { login } from 'services/auth';
-import { fetchLogin } from 'services';
 import Loader from 'components/Loader';
-import './styles.css';
+import { login, getLogin } from 'services';
 import logo from '../../assets/logo.svg';
+import './styles.css';
 
-function Login(props: any) {
-    const { dispatch } = props;
+function Login(props: any) {   
     const { push } = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const [messages, setMessages] = useState('');
     const [loading, setLoading] = useState(false);
     const [openSnack, setOpenSnack] = useState(false);
 
-    function handleSubmitUser(data: any, event: any) {
-        setLoading(true);
+    const handleSubmitUser = async (data: any, event: any) => {
         event.preventDefault();
+        setLoading(true);        
         const { user, password } = data;
-        fetchLogin(user, password).then(response => {
+        try {
+            const response = await getLogin(user, password);
             if (response.data.length) {
                 const result = Object.assign({}, ...response.data);
-                dispatch(userActions.setUserState(String(result.id)));
                 login(String(result.id));
                 setMessages('');
                 push('/');
@@ -35,13 +32,11 @@ function Login(props: any) {
                 setMessages('Usuário ou senha incorretos');
                 setOpenSnack(true);
             }
-            setLoading(false);
-        }).catch(error => {
+        } catch (error) {
             setMessages(`Não foi possível realizar o login ${error}`);
             setOpenSnack(true);
-            setLoading(false);
-        });
-       
+        }
+        setLoading(false);
     }
 
     const handleCloseSnack = (event: any, reason: string) => {
@@ -49,7 +44,7 @@ function Login(props: any) {
             return;
         setOpenSnack(false);
     };
-console.log("loading ",loading)
+    console.log("loading ", loading)
     return (
         <div id='page-login'>
             {loading && <Loader />}

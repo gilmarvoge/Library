@@ -1,34 +1,31 @@
 import { booksContants } from 'redux/constants';
-import {books as initialBooks} from 'services/mocks';
+import { IBook } from 'models';
 
-const books = (state = initialBooks, action: any) => {
+const books = (state = [], action: any) => {
   switch (action.type) {
-    case booksContants.GET_ALL_BOOKS: {
+    case booksContants.SET_ALL_BOOKS:
       return [...action.books];
-    }
     case booksContants.GET_BOOK_BY_ID: {
-      const book = state.filter(book => {
-        return book.id === action.bookId // return all the posts not matching the action.post.id
+      const book = state.filter((book:IBook) => {
+        return book.id === action.bookId 
       })
       return [...book];
     }
-    case booksContants.ADD_BOOK: {
+    case booksContants.ADD_BOOK:
       return [...state, action.book];
-    }
-
     case booksContants.EDIT_BOOK_BY_ID: {
-      const newState = state.map(book => {
+      const newState = state.map((book:IBook) => {
         if (book.id === action.book.id) {
           return action.book;
         }
         return book;
-      });    
+      });
       return [...newState];
     }
     case booksContants.DELETE_BOOK: {
-      const newState = state.filter(book => {
+      const newState = state.filter((book:IBook) => {
         return book.id !== action.bookId
-      })    
+      })
       return [...newState]
     }
     default:

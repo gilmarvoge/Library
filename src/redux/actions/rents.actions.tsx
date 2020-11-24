@@ -1,24 +1,25 @@
 import { rentsContants } from 'redux/constants';
-import { IRent } from 'models';
+import { IRent, IRents } from 'models';
 
-export const getAllRents = () => ({
-  type: rentsContants.GET_BOOKS_RENT,
+export const setAllRents = (rents: IRents) => ({
+  type: rentsContants.SET_ALL_RENTS,
+  rents
 })
 
-export const addRent = (rent: IRent) => ({
-  type: rentsContants.ADD_BOOK_RENT,
+export const setRent = (rent: IRent) => ({
+  type: rentsContants.ADD_RENT,
   rent,
 })
 
-export const deleteRentByBookId = (book_id: string) => ({
-  type: rentsContants.DELETE_BOOK_RENT,
-  book_id,
+export const setDeletedRent = (id: string) => ({
+  type: rentsContants.DELETE_RENT,
+  id,
 });
 
 export const rentsActions = {
-  getAllRents,
-  deleteRentByBookId,
-  addRent
+  setAllRents,
+  setDeletedRent,
+  setRent
 };
 
 
