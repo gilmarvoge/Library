@@ -1,8 +1,9 @@
 import { booksContants } from 'redux/constants';
-import { IBook } from 'models';
+import { IBook, IBooks } from 'models';
 
-export const getAllBooks = () => ({
+export const getAllBooks = (books:IBooks) => ({
   type: booksContants.GET_ALL_BOOKS,
+  books
 })
 
 export const addBook = (book: IBook) => ({

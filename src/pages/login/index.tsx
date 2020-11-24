@@ -5,9 +5,10 @@ import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
 import { FiLogIn } from 'react-icons/fi';
 import { Alert } from 'components';
-import {users as loginUsers} from 'services/mocks';
 import { userActions } from 'redux/actions';
 import { login } from 'services/auth';
+import { fetchLogin } from 'services';
+import Loader from 'components/Loader';
 import './styles.css';
 import logo from '../../assets/logo.svg';
 
@@ -16,23 +17,31 @@ function Login(props: any) {
     const { push } = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const [messages, setMessages] = useState('');
+    const [loading, setLoading] = useState(false);
     const [openSnack, setOpenSnack] = useState(false);
 
     function handleSubmitUser(data: any, event: any) {
+        setLoading(true);
         event.preventDefault();
         const { user, password } = data;
-        loginUsers.filter(api => {
-            if (api.user === user && api.password === password) {
-                dispatch(userActions.setUserState(String(api.id)));
-                login(String(api.id));
+        fetchLogin(user, password).then(response => {
+            if (response.data.length) {
+                const result = Object.assign({}, ...response.data);
+                dispatch(userActions.setUserState(String(result.id)));
+                login(String(result.id));
                 setMessages('');
                 push('/');
-            }
-            else {
+            } else {
                 setMessages('Usuário ou senha incorretos');
                 setOpenSnack(true);
             }
+            setLoading(false);
+        }).catch(error => {
+            setMessages(`Não foi possível realizar o login ${error}`);
+            setOpenSnack(true);
+            setLoading(false);
         });
+       
     }
 
     const handleCloseSnack = (event: any, reason: string) => {
@@ -40,9 +49,10 @@ function Login(props: any) {
             return;
         setOpenSnack(false);
     };
-
+console.log("loading ",loading)
     return (
         <div id='page-login'>
+            {loading && <Loader />}
             <form id='formuser' onSubmit={handleSubmit(handleSubmitUser)}>
                 <header>
                     <img src={logo} alt='Biblioteca' />
@@ -70,7 +80,7 @@ function Login(props: any) {
                         {errors.password && errors.password?.message}
                     </div>
                 </fieldset>
-                <button type='submit'> 
+                <button type='submit'>
                     <span>
                         <FiLogIn />
                     </span>

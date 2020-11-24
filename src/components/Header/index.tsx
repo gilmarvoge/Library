@@ -10,6 +10,8 @@ import logo from '../../assets/logo.svg';
 import './styles.css';
 
 function Header(props: any) {
+  const {search} =props;
+  console.log('search', search)
   let { location, push } = useHistory();
 
   const signOut = () => {
@@ -20,9 +22,9 @@ function Header(props: any) {
   return (
     <div id='page-header'>
       <header>
-        <div id='header-left'>
+        <div id='header-flex'>
           {location?.pathname !== '/' &&
-            <Tooltip title="Voltar" placement="bottom">
+            <Tooltip title='Voltar' placement='bottom'>
               <IconButton onClick={() => push('/')}>
                 <ArrowBackIcon fontSize='large' />
               </IconButton>
@@ -35,8 +37,9 @@ function Header(props: any) {
          </span>
           </div>
         </div>
-        <div id='header-right'>
-          <Tooltip title="Sair" placement="bottom">
+        {search}
+        <div id='header-flex' >
+          <Tooltip title='Sair' placement='bottom'>
             <IconButton onClick={signOut} >
               <ExitToAppIcon fontSize='large' />
             </IconButton>

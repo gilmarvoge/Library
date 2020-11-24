@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Fab from '@material-ui/core/Fab';
-import Grid from '@material-ui/core/Grid';
-import Tooltip from '@material-ui/core/Tooltip';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import Snackbar from '@material-ui/core/Snackbar';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import IconButton from '@material-ui/core/IconButton';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import BookmarkIcon from '@material-ui/icons/Bookmark';
-import AddIcon from '@material-ui/icons/Add';
+import {
+  Fab, Grid, Tooltip, Card, CardHeader, Snackbar,
+  CardContent, CardActions,IconButton 
+} from '@material-ui/core';
+import {
+  Visibility as VisibilityIcon, Delete as DeleteIcon, 
+  MenuBook as MenuBookIcon, Edit as EditIcon, Add as AddIcon
+} from '@material-ui/icons';
 import Dialogs from 'components/Dialogs';
 import Header from 'components/Header';
-import Search from 'components/Search'
+import Search from 'components/Search';
 import { Alert } from 'components';
+import {fetchBooks} from 'services';
 import { booksActions, rentsActions } from 'redux/actions';
 import { IBooks, IBook, IUser, IRent, IRents } from 'models';
 import './styles.css';
@@ -33,7 +28,9 @@ function Home(props: any) {
   const [messages, setMessages] = useState('');
 
   useEffect(() => {
-    dispatch(booksActions.getAllBooks());
+    fetchBooks().then(response => {
+    dispatch(booksActions.getAllBooks(response.data));
+    })
   }, [dispatch]);
 
   const deleteBook = (id: string, bookOwnerRent: string) => {
@@ -86,7 +83,7 @@ function Home(props: any) {
     else {
       setSnackType('warning');
       setOpenSnack(true);
-      setMessages('Você não pode alugar um livro que já está alugado');
+      setMessages('Este livro está alugado');
     }
   }
 
@@ -98,12 +95,11 @@ function Home(props: any) {
 
   return (
     <div id='page-home'>
-      <Header />        
+      <Header search={<Search books={books} setFilteredBooks={(filtered: []) => setFilteredBooks(filtered)} />} />
       {showMore && <Dialogs open={showMore.open} book={showMore.book} close={() => setShowMore({ open: false, book: {} })} />}
       <div className='content'>
-      <Search books={books} setFilteredBooks={(filtered:[])=>setFilteredBooks(filtered)}/>   
         <Grid container spacing={2} justify='center' >
-          {(filteredBooks.length?filteredBooks:books).map((book: IBook) => {
+          {(filteredBooks.length ? filteredBooks : books).map((book: IBook) => {
             const bookOwnerRent = filterHasBooksRented(book.id);
             return (
               <Grid item key={book.id}>
@@ -131,7 +127,6 @@ function Home(props: any) {
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-
                       </>
                     }
                     title={book.title}
@@ -142,7 +137,7 @@ function Home(props: any) {
                       root: 'card-content-root',
                     }}
                   >
-                    <img src={book.image_url} className='media' alt=''/>
+                    <img src={book.image_url} className='media' alt='' />
                   </CardContent>
                   <CardActions
                     classes={{
@@ -156,7 +151,7 @@ function Home(props: any) {
                       placement='bottom'
                     >
                       <IconButton aria-label='rent book' onClick={() => rentBook(book, bookOwnerRent)}>
-                        <BookmarkIcon
+                        <MenuBookIcon
                           classes={{
                             root: `${bookOwnerRent === 'myne' ?
                               'rent-icon-sucess' : bookOwnerRent === 'other' ?

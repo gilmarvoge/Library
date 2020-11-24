@@ -4,7 +4,7 @@ import {books as initialBooks} from 'services/mocks';
 const books = (state = initialBooks, action: any) => {
   switch (action.type) {
     case booksContants.GET_ALL_BOOKS: {
-      return [...state];
+      return [...action.books];
     }
     case booksContants.GET_BOOK_BY_ID: {
       const book = state.filter(book => {
