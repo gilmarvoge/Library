@@ -10,32 +10,31 @@ import Login from 'pages/Login';
 import CreateEditBook from 'pages/CreateBook';
 import NotFound from 'pages/NotFound';
 
-const history = createMemoryHistory();
 
-test('landing on a login page', () => {
+describe('tests routes using memory router', () => {
   const history = createMemoryHistory()
-  history.push('/login')
-  render(
-    <Provider store={store}>
+
+  test('landing on a login page', () => {
+  
+    history.push('/login')
+    render(
       <Router history={history}>
         <Login />
       </Router>
-    </Provider>
-  )
-  expect(screen.getByText(/Login/i)).toBeInTheDocument();
-});
+    )
+    expect(screen.getByText(/Login/i)).toBeInTheDocument();
+  });
 
+  // test('landing on a home page', () => {
+  //   const history = createMemoryHistory()
+  //   history.push('/login')
+  //   render(
+  //     <Router history={history}>
+  //       <Home />
+  //     </Router>
+  //   )
+  //   expect(screen.getByText(/Login/i)).toBeInTheDocument();
+  // });
 
-// test('landing on a bad page', () => {
-//   const history = createMemoryHistory()
-//   history.push('*')
-//   render(
-//     <Provider store={store}>
-//       <Router history={history}>
-//         <NotFound />
-//       </Router>
-//     </Provider>
-//   );
-//   expect(screen..g('page-not-found')).toBeInTheDocument();
-// })
+})
 

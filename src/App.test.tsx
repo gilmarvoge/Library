@@ -1,12 +1,9 @@
 import React from 'react';
-import { render } from '@testing-library/react';
-import { Provider } from 'react-redux';
-import store from 'store';
+import renderer from 'react-test-renderer';
 import App from './App';
 
-test('renders react app', () => {
-  render(<Provider store={store}>   
-      <App />
-    </Provider>
-  );
+test('Render App Snapshot', () => {
+  const component = renderer.create(<App />);
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });

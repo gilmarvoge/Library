@@ -1,23 +1,16 @@
-Passos para executar Fake Mock API
-- npm run server-api
-
-Endpoints:
-  http://localhost:3004/users
-  http://localhost:3004/books
-  http://localhost:3004/rents
+Fake Mock API Endpoints:
+https://5fbcdf9f3f8f90001638c61a.mockapi.io/users
+https://5fbcdf9f3f8f90001638c61a.mockapi.io/books
+https://5fbcdf9f3f8f90001638c61a.mockapi.io/rents
 
 
 Passos para executar app:
 - npm install
 - npm start
 
-Usuário para login:
-
- user: hardware
- password: 12345
+Usuário para login, caso não deseje criar um novo :
+ Usuário: hardware
+ Senha: 12345
   
- user: software
- password: 56789
-
-
- mockapi.io
+Passos para executar os teste unitários do app:
+- npm test

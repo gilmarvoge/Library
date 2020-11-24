@@ -1,83 +1,31 @@
-import React from "react";
-//import { render } from '@testing-library/react';
-//import Enzyme from 'enzyme';
-import { createBrowserHistory, createMemoryHistory } from "history";
-//import { users } from 'services/mocks';
-import { render, screen } from '@testing-library/react';
-import { Provider } from 'react-redux';
+import React from 'react';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { createMemoryHistory } from "history";
 import { Router } from 'react-router-dom';
-import store from 'store';
-import renderer from 'react-test-renderer';
 import Login from 'pages/Login';
 
-const history = createMemoryHistory({ initialEntries: ['/'] });
-test('renders Login', () => {
-
-  render(<Provider store={store}>
+describe('test create book page', () => {
+  const history = createMemoryHistory()
+  const component = (
     <Router history={history}>
       <Login />
     </Router>
-  </Provider>);
+  );
+
+  beforeEach(() => {
+    render(component);
+  });
+
+  test('should display required error when value is invalid', async () => {
+    fireEvent.input(screen.getByLabelText('Usuario'), { target: { value: '' } });
+    fireEvent.input(screen.getByLabelText('Senha'), { target: { value: '' } });
+    fireEvent.submit(screen.getByText('Entrar'));
+    expect(await screen.findAllByRole('alert')).toHaveLength(2);
+  });
+  test("should not display error when value is valid", async () => {
+    fireEvent.input(screen.getByLabelText('Usuario'), { target: { value: 'hardware' } });
+    fireEvent.input(screen.getByLabelText('Senha'), { target: { value: '12345' } });
+    fireEvent.submit(screen.getByText('Entrar'));
+    expect(await screen.queryAllByRole('alert')).toHaveLength(0);
+  });
 });
-
-// describe("<Login />", () => {
-//   it("renders text input correctly", () => {
-//     const component = renderer.create(
-//       <Provider store={store}>
-//         <Router history={history}>
-//           <Login />
-//         </Router>
-//       </Provider>
-//     ).root;
-//    // const tste = component.find
-//     //const linkElement = screen.getByText(/Login/i);
-
-
-//   });
-// });
-// //   const linkElement = screen.getByText(/learn react/i);
-// // expect(linkElement).toBeInTheDocument();
-//   // const testValues = {
-//   //   user: 'FOO',
-//   //   password: 'BAZ',
-//   //   handleSubmit: jest.fn(),
-//   // };
-
-//   // it('Submit works', () => {
-//   //   it('renders the inner Counter', () => {
-//   //     const wrapper = mount(<Login />);
-
-//   //   });
-//     // const historyMock = { push: jest.fn(), location: {}, listen: jest.fn() };
-//     // const component = Enzyme.mount(
-//     //   <Provider store={store}>
-//     //     <Router history={historyMock}>
-//     //       <Login {...testValues} />
-//     //     </Router>
-//     //   </Provider>
-//     // );
-//     // console.log("component ",component)
-//     // component.find('form').simulate('submit');
-//     // component.find("input.user").simulate('click');
-//     // expect(testValues.handleSubmit).toHaveBeenCalledTimes(1);
-//     // expect(testValues.handleSubmit).toBeCalledWith({ username: testValues.username, password: testValues.password });
-//   // });
-
-//   //const onSubmitMock = jest.fn();
-//   // const historyMock = { push: jest.fn(), location: {}, listen: jest.fn() };
-//   // const component = renderer.create(
-//   //   <Provider store={store}> 
-//   //     <Router history={historyMock}>
-//   //       <Login />
-//   //     </Router>
-//   //   </Provider>
-//   // )
-//   // let tree = component.toJSON();
-
-//   // component.find("input.user").simulate('change', { target: { value: users[0].user } })
-//   // component.find("input.password").simulate('change', { target: { value: users[0].password } })
-//   // component.find("form").simulate("submit");
-
-//   // console.log("onClickMock.mock", onSubmitMock.mock)
-//   // expect(onSubmitMock).toBeCalled()
-// });

@@ -59,63 +59,60 @@ function CreateEditBook(props: any) {
     };
 
     return (
-        <div id='page-createedit-book'>
+        <div id='page-createedit-book' data-testid='create-book'>
             <Header />
             <form onSubmit={handleSubmit(handleSubmitBook)}>
                 <h1>{bookId && bookId !== '' ? 'Editar livro' : 'Cadastro do livro'}</h1>
                 <fieldset>
                     <div className='field'>
-                        <label htmlFor='name'>Nome</label>
+                        <label htmlFor='title'>Título</label>
                         <input
                             defaultValue={bookToEdit?.title}
-                            type='text'
                             name='title'
                             id='title'
                             ref={register({ required: 'Digite o nome do livro' })}
                         />
-                        {errors.title && errors.title?.message}
+                        {errors.title && <span role='alert'> {errors.title.message}</span>}
+
                     </div>
                     <div className='field'>
-                        <label htmlFor='name'>Autor</label>
+                        <label htmlFor='author'>Autor</label>
                         <input
                             defaultValue={bookToEdit?.author}
-                            type='text'
                             name='author'
                             id='author'
                             ref={register({ required: 'Digite o nome do autor' })}
                         />
-                        {errors.author && errors.author?.message}
+                        {errors.author && <span role='alert'> {errors.author.message}</span>}
                     </div>
                     <div className='field'>
-                        <label htmlFor='name'>Descrição</label>
+                        <label htmlFor='description'>Descrição</label>
                         <input
                             defaultValue={bookToEdit?.description}
-                            type='text'
                             name='description'
                             id='description'
                             ref={register({ required: 'Digite a descrição do livro' })}
                         />
-                        {errors.description && errors.description?.message}
+                        {errors.description && <span role='alert'>{errors.description.message}</span>}
                     </div>
                     <div className='field'>
-                        <label htmlFor='name'>Link da imagem</label>
+                        <label htmlFor='image_url'>Link da imagem</label>
                         <input
                             defaultValue={bookToEdit?.image_url}
-                            type='text'
                             name='image_url'
                             id='image_url'
                             ref={register({ required: 'Digite o link da imagem do livro' })}
                         />
-                        {errors.image_url && errors.image_url?.message}
+                        {errors.image_url && <span role='alert'>{errors.image_url.message}</span>}
                     </div>
                 </fieldset>
-                <button type='submit'>
+                <button type='submit' data-testid='submit-button'>
                     {bookId && bookId !== '' ? 'Salvar livro' : 'Cadastrar livro'}
                 </button>
             </form>
             {messages &&
                 <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleCloseSnack} >
-                    <Alert severity="error" onClose={handleCloseSnack} >
+                    <Alert severity='error' onClose={handleCloseSnack} >
                         {messages}
                     </Alert>
                 </Snackbar>

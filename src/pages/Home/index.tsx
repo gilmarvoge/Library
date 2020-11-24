@@ -115,7 +115,7 @@ function Home(props: any) {
   };
 
   return (
-    <div id='page-home'>
+    <div id='page-home' data-testid='home'>
       <Header search={<Search books={books} setFilteredBooks={(filtered: []) => setFilteredBooks(filtered)} />} />
       {showMore && <Dialogs open={showMore.open} book={showMore.book} close={() => setShowMore({ open: false, book: {} })} />}
       <div className='content'>

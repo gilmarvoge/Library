@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
 import { FiLogIn } from 'react-icons/fi';
@@ -10,7 +9,7 @@ import { login, getLogin } from 'services';
 import logo from '../../assets/logo.svg';
 import './styles.css';
 
-function Login(props: any) {   
+function Login() {
     const { push } = useHistory();
     const { register, handleSubmit, errors } = useForm();
     const [messages, setMessages] = useState('');
@@ -19,7 +18,7 @@ function Login(props: any) {
 
     const handleSubmitUser = async (data: any, event: any) => {
         event.preventDefault();
-        setLoading(true);        
+        setLoading(true);
         const { user, password } = data;
         try {
             const response = await getLogin(user, password);
@@ -55,24 +54,23 @@ function Login(props: any) {
                 </header>
                 <fieldset>
                     <div className='field'>
-                        <label htmlFor='name'>Usuario</label>
+                        <label htmlFor='user'>Usuario</label>
                         <input
-                            type='text'
                             name='user'
                             id='user'
                             ref={register({ required: 'Digite um usuário' })}
                         />
-                        {errors.user && errors.user?.message}
+                        {errors.user && <span role="alert">{errors.user.message}</span>}
                     </div>
                     <div className='field'>
-                        <label htmlFor='name'>Senha</label>
+                        <label htmlFor='password'>Senha</label>
                         <input
                             type='password'
                             name='password'
                             id='password'
                             ref={register({ required: 'Digite uma senha' })}
                         />
-                        {errors.password && errors.password?.message}
+                        {errors.password && <span role="alert">{errors.password.message}</span>}
                     </div>
                 </fieldset>
                 <button type='submit'>
@@ -93,4 +91,4 @@ function Login(props: any) {
     )
 }
 
-export default connect()(Login);
+export default Login;
