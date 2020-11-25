@@ -6,7 +6,7 @@ import React from 'react';
 import { Router } from 'react-router-dom';
 import Home from 'pages/Home';
 
-test('render home page', () => {
+test('render home page', async () => {
     const history = createMemoryHistory();
 
     const component = (

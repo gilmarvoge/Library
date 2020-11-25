@@ -10,8 +10,7 @@ function Routes() {
   return (
     <BrowserRouter>
       <Switch>
-        <PrivateRoute exact path='/' component={Home} />
-        <PrivateRoute exact path='/create-edit' component={Home} />
+        <PrivateRoute exact path='/' component={Home} />       
         <PrivateRoute exact path='/edit/:bookId' component={CreateEditBook} />
         <PrivateRoute exact path="/create" component={CreateEditBook} />   
         <Route path='/login' component={Login} />

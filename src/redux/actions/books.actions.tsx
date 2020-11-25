@@ -16,9 +16,9 @@ export const getBookById = (bookId: string) => ({
   bookId,
 });
 
-export const setEditedBook = (id: string, book: IBook) => ({
+export const setEditedBook = (bookId: string, book: IBook) => ({
   type: booksContants.EDIT_BOOK_BY_ID,
-  id,
+  bookId,
   book,
 });
 

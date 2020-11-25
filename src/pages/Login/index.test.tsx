@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from "history";
 import { Router } from 'react-router-dom';
 import Login from 'pages/Login';
@@ -25,7 +25,9 @@ describe('test create book page', () => {
   test("should not display error when value is valid", async () => {
     fireEvent.input(screen.getByLabelText('Usuario'), { target: { value: 'hardware' } });
     fireEvent.input(screen.getByLabelText('Senha'), { target: { value: '12345' } });
-    fireEvent.submit(screen.getByText('Entrar'));
+    await waitFor(async () => {
+      fireEvent.submit(screen.getByText('Entrar'));
+    });
     expect(await screen.queryAllByRole('alert')).toHaveLength(0);
   });
 });

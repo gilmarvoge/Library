@@ -11,7 +11,7 @@ import {
 } from '@material-ui/icons';
 import Dialogs from 'components/Dialogs';
 import Header from 'components/Header';
-import Search from 'components/Search';
+import SearchBar from 'components/SearchBar';
 import { Alert } from 'components';
 import { getBooks, deleteBook, getUserIdStorage, getRents, addRent, deleteRent } from 'services';
 import { setDeletedBook, setAllRents, setAllBooks, setDeletedRent, setRent } from 'redux/actions';
@@ -19,7 +19,7 @@ import { IBooks, IBook, IRent, IRents } from 'models';
 import './styles.css';
 
 function Home(props: any) {
-  const { books, rents, dispatch, authentication } = props;
+  const { books, rents, dispatch } = props;
   const { push } = useHistory();
   const [openSnack, setOpenSnack] = useState(false);
   const [userId, setUserId] = useState('');
@@ -28,27 +28,40 @@ function Home(props: any) {
   const [snackType, setSnackType] = useState('');
   const [messages, setMessages] = useState('');
 
-  const getAllBooks = async () => {
-    const responseBooks = await getBooks();
-    if (responseBooks.data.length)
-      dispatch(setAllBooks(responseBooks.data));
-
-    const response = await getRents();
-    if (response.data.length)
-      dispatch(setAllRents(response.data));
-
-    const user_id = await getUserIdStorage();
-    setUserId(String(user_id)); 
-  }
   useEffect(() => {
     getAllBooks();
   }, [userId]);
 
+  const getAllBooks = async () => {
+    try {
+      const responseBooks = await getBooks();
+      if (responseBooks.data.length)
+        dispatch(setAllBooks(responseBooks.data));
+
+      const response = await getRents();
+      if (response.data.length)
+        dispatch(setAllRents(response.data));
+
+      const user_id = await getUserIdStorage();
+      setUserId(String(user_id));
+    } catch (error) {
+      setSnackType('error');
+      setOpenSnack(true);
+      setMessages(error);
+    }
+  }
+
   const handleDeleteBook = async (id: string, bookOwnerRent: string) => {
     if (bookOwnerRent === 'available' || bookOwnerRent === 'mine') {
-      const response = await deleteBook(id);
-      if (response.data.length)
-        dispatch(setDeletedBook(id));
+      try {
+        const response = await deleteBook(id);
+        if (response.data.length)
+          dispatch(setDeletedBook(id));
+      } catch (error) {
+        setSnackType('error');
+        setOpenSnack(true);
+        setMessages(error);
+      }
     }
     else {
       setSnackType('warning');
@@ -86,7 +99,7 @@ function Home(props: any) {
       const response = await addRent(rentBook);
       if (response.data.length) {
         dispatch(setRent(rentBook));
-        setSnackType('success'); 
+        setSnackType('success');
         setOpenSnack(true);
         setMessages(`Você alugou o livro ${book.title}`);
       }
@@ -116,7 +129,7 @@ function Home(props: any) {
 
   return (
     <div id='page-home' data-testid='home'>
-      <Header search={<Search books={books} setFilteredBooks={(filtered: []) => setFilteredBooks(filtered)} />} />
+      <Header search={<SearchBar books={books} setFilteredBooks={(filtered: []) => setFilteredBooks(filtered)} />} />
       {showMore && <Dialogs open={showMore.open} book={showMore.book} close={() => setShowMore({ open: false, book: {} })} />}
       <div className='content'>
         <Grid container spacing={2} justify='center' >
@@ -145,7 +158,7 @@ function Home(props: any) {
                         </Tooltip>
                         <Tooltip title='Editar livro' placement='bottom'>
                           <IconButton aria-label='edit' onClick={() => handleEditBook(String(book.id), bookOwnerRent)}>
-                            <EditIcon /> 
+                            <EditIcon />
                           </IconButton>
                         </Tooltip>
                       </>
@@ -194,7 +207,8 @@ function Home(props: any) {
         </Grid>
       </div>
       <Tooltip title='Adicionar livro' placement='bottom'>
-        <Fab color='primary'
+        <Fab
+          color='primary'
           aria-label='add'
           classes={{
             root: 'fab',

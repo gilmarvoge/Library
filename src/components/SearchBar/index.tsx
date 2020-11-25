@@ -10,7 +10,7 @@ export interface Props {
 
 const SearchBookPage = ((props: Props) => {
   const { books, setFilteredBooks } = props;
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const handleChange = (event: FormEvent<HTMLInputElement>) => { 
     setSearchTerm(event.currentTarget.value);
@@ -30,7 +30,10 @@ const SearchBookPage = ((props: Props) => {
     <div className='search-books-bar'>
       <Link to='/' className='close-search'>Close </Link>
       <div className='search-books-input-wrapper'>
-        <input type='text' placeholder='Pesquise por título ou autor'
+        <input 
+         placeholder='Pesquise por título ou autor'
+         aria-label='search-input'
+         name='author'
           onChange={handleChange}
         />
       </div>

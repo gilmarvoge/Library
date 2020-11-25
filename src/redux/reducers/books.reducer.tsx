@@ -15,7 +15,7 @@ const books = (state = [], action: any) => {
       return [...state, action.book];
     case booksContants.EDIT_BOOK_BY_ID: {
       const newState = state.map((book:IBook) => {
-        if (book.id === action.book.id) {
+        if (book.id === action.bookId) {
           return action.book;
         }
         return book;

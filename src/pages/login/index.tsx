@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
 import { FiLogIn } from 'react-icons/fi';
 import { Alert } from 'components';
-import Loader from 'components/Loader';
 import { login, getLogin } from 'services';
 import logo from '../../assets/logo.svg';
 import './styles.css';
@@ -12,13 +11,11 @@ import './styles.css';
 function Login() {
     const { push } = useHistory();
     const { register, handleSubmit, errors } = useForm();
-    const [messages, setMessages] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [messages, setMessages] = useState('');  
     const [openSnack, setOpenSnack] = useState(false);
 
     const handleSubmitUser = async (data: any, event: any) => {
-        event.preventDefault();
-        setLoading(true);
+        event.preventDefault();      
         const { user, password } = data;
         try {
             const response = await getLogin(user, password);
@@ -34,8 +31,7 @@ function Login() {
         } catch (error) {
             setMessages(`Não foi possível realizar o login ${error}`);
             setOpenSnack(true);
-        }
-        setLoading(false);
+        }       
     }
 
     const handleCloseSnack = (event: any, reason: string) => {
@@ -43,10 +39,9 @@ function Login() {
             return;
         setOpenSnack(false);
     };
-    console.log("loading ", loading)
+   
     return (
-        <div id='page-login'>
-            {loading && <Loader />}
+        <div id='page-login'>          
             <form id='formuser' onSubmit={handleSubmit(handleSubmitUser)}>
                 <header>
                     <img src={logo} alt='Biblioteca' />

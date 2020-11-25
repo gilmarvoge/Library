@@ -121,9 +121,8 @@ function CreateEditBook(props: any) {
     )
 }
 
-const mapStateToProps = ({ books, authentication }: { books: IBooks, authentication: IUser }) => ({
-    books: books,
-    user: authentication,
+const mapStateToProps = ({ books }: { books: IBooks  }) => ({
+    books: books
 });
 
 export default connect(mapStateToProps)(CreateEditBook);

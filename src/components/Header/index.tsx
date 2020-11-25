@@ -20,7 +20,7 @@ function Header(props: any) {
 
   return (
     <div id='page-header'>
-      <header>
+      <header data-testid='header'>
         <div id='header-flex'>
           {location?.pathname !== '/' &&
             <Tooltip title='Voltar' placement='bottom'>
