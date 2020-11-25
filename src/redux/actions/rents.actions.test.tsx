@@ -1,19 +1,10 @@
 import * as actions from 'redux/actions';
 import { rentsContants } from 'redux/constants';
-
-const rents = [{
-  'book_id': '1',
-  'user_id': '1',
-}]
-
-const rent = {
-  'book_id': '1',
-  'user_id': '1',
-}
-
-const rentId = '1';
+import * as mocks from 'utils';
 
 describe('actions rents', () => {
+  const { rent, rentId, rents } = mocks;
+
   test('should create an action to set books', () => {
     const addAction = {
       type: rentsContants.SET_ALL_RENTS, rents

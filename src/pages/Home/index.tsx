@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import {
-  Fab, Grid, Tooltip, Card, CardHeader, Snackbar,
-  CardContent, CardActions, IconButton
-} from '@material-ui/core';
-import {
-  Visibility as VisibilityIcon, Delete as DeleteIcon,
-  MenuBook as MenuBookIcon, Edit as EditIcon, Add as AddIcon
-} from '@material-ui/icons';
+import { Fab, Grid, Tooltip, Card, CardHeader, Snackbar, CardContent, CardActions, IconButton } from '@material-ui/core';
+import { Visibility as VisibilityIcon, Delete as DeleteIcon, MenuBook as MenuBookIcon, Edit as EditIcon, Add as AddIcon } from '@material-ui/icons';
 import Dialogs from 'components/Dialogs';
 import Header from 'components/Header';
 import SearchBar from 'components/SearchBar';
@@ -52,11 +46,14 @@ function Home(props: any) {
   }
 
   const handleDeleteBook = async (id: string, bookOwnerRent: string) => {
-    if (bookOwnerRent === 'available' || bookOwnerRent === 'mine') {
+    if (bookOwnerRent !== 'UNAVAILABLE') {
       try {
         const response = await deleteBook(id);
         if (response.data.length)
           dispatch(setDeletedBook(id));
+        setSnackType('success');
+        setOpenSnack(true);
+        setMessages(`Livro deletado com sucesso`);
       } catch (error) {
         setSnackType('error');
         setOpenSnack(true);
@@ -71,7 +68,7 @@ function Home(props: any) {
   }
 
   const handleEditBook = (id: string, bookOwnerRent: string) => {
-    if (bookOwnerRent === 'available' || bookOwnerRent === 'mine')
+    if (bookOwnerRent !== 'UNAVAILABLE')
       push(`/edit/${id}`);
     else {
       setSnackType('warning');
@@ -81,20 +78,22 @@ function Home(props: any) {
   }
 
   const filterHasBooksRented = (bookId: string) => {
+    //Testar se usuário logado é o dono do aluguel do livro, ou está alugado por outro user,
+    //ou está disponível para aluguel
     const rentedBooks = rents.filter((rent: IRent) => rent.book_id === bookId);
     if (rentedBooks.length) {
-      const rented = rents.filter((rent: IRent) => rent.book_id === bookId && rent.user_id === authentication.id)
+      const rented = rents.filter((rent: IRent) => rent.book_id === bookId && rent.user_id === userId)
       if (rented.length)
-        return 'mine';
+        return 'RENTED';
       else
-        return 'other';
+        return 'UNAVAILABLE';
     }
     else
-      return 'available';
+      return 'AVAILABLE';
   }
 
   const handleRentBook = async (book: IBook, bookOwnerRent: string) => {
-    if (bookOwnerRent === 'available') {
+    if (bookOwnerRent === 'AVAILABLE') {
       const rentBook = { book_id: String(book.id), user_id: userId }
       const response = await addRent(rentBook);
       if (response.data.length) {
@@ -104,7 +103,7 @@ function Home(props: any) {
         setMessages(`Você alugou o livro ${book.title}`);
       }
     }
-    else if (bookOwnerRent === 'mine') {
+    else if (bookOwnerRent === 'RENTED') {
       const rent = rents.filter((rent: IRent) => rent.book_id === book.id);
       const response = await deleteRent(rent.id);
       if (response.data.length) {
@@ -179,16 +178,16 @@ function Home(props: any) {
                     }}
                     disableSpacing
                   >
-                    <Tooltip title={`${bookOwnerRent === 'mine' ?
-                      'Livro alugado' : bookOwnerRent === 'other' ?
+                    <Tooltip title={`${bookOwnerRent === 'RENTED' ?
+                      'Livro alugado' : bookOwnerRent === 'UNAVAILABLE' ?
                         'Livro não disponível' : 'Alugar livro'}`}
                       placement='bottom'
                     >
                       <IconButton aria-label='rent book' onClick={() => handleRentBook(book, bookOwnerRent)}>
                         <MenuBookIcon
                           classes={{
-                            root: `${bookOwnerRent === 'mine' ?
-                              'rent-icon-sucess' : bookOwnerRent === 'other' ?
+                            root: `${bookOwnerRent === 'RENTED' ?
+                              'rent-icon-sucess' : bookOwnerRent === 'UNAVAILABLE' ?
                                 'rent-icon-warning' : ''}`
                           }}
                         />

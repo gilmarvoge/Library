@@ -1,25 +1,11 @@
 import * as actions from 'redux/actions';
 import { booksContants } from 'redux/constants';
-
-const books= [{
-  'id': '7',
-  'author': 'Harmeet SinghMehul',
-  'title': 'Learning Web Development with React and Bootstrap',
-  'description': 'Build maintainable and performant user interfaces',
-  'image_url': 'http://books.google.com'
-}]
-
-const book = {
-  'id': '7',
-  'author': 'Harmeet SinghMehul',
-  'title': 'Learning Web Development with React and Bootstrap',
-  'description': 'Build maintainable and performant user interfaces',
-  'image_url': 'http://books.google.com'
-}
-
-const bookId = '1';
+import * as mocks from 'utils';
 
 describe('actions book', () => {
+  const { book, bookId } = mocks;
+  const books = mocks.booksMock;
+  
   test('should create an action to set books', () => {
     const addAction = {
       type: booksContants.SET_BOOK, book
@@ -32,14 +18,7 @@ describe('actions book', () => {
       type: booksContants.DELETE_BOOK, bookId
     }
     expect(actions.setDeletedBook(bookId)).toEqual(deleteAction)
-  });
-
-  test('should create an action to get book', () => {
-    const getAction = {
-      type: booksContants.GET_BOOK_BY_ID, bookId
-    }
-    expect(actions.getBookById(bookId)).toEqual(getAction)
-  });
+  }); 
 
   test('should create an action to edit book', () => {
     const editAction = {
@@ -49,10 +28,10 @@ describe('actions book', () => {
   });
 
   test('should create an action to set all books', () => {
-    const editAction = {
+    const setBookAction = {
       type: booksContants.SET_ALL_BOOKS, books
     }
-    expect(actions.setAllBooks(books)).toEqual(editAction)
+    expect(actions.setAllBooks(books)).toEqual(setBookAction)
   });
 });
 

@@ -22,6 +22,5 @@ describe('tests routes using memory router', () => {
     history.push('/login')
     expect(screen.getByText(/Login/i)).toBeInTheDocument();
   });
-
-})
+});
 

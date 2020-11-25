@@ -1,7 +1,7 @@
 import { booksContants } from 'redux/constants';
 import { IBook, IBooks } from 'models';
-interface BookItems extends Array<IBook>{}
-export const setAllBooks = (books: BookItems) => ({
+
+export const setAllBooks = (books: IBooks) => ({
   type: booksContants.SET_ALL_BOOKS,
   books
 })
@@ -10,11 +10,6 @@ export const setBook = (book: IBook) => ({
   type: booksContants.SET_BOOK,
   book,
 })
-
-export const getBookById = (bookId: string) => ({
-  type: booksContants.GET_BOOK_BY_ID,
-  bookId,
-});
 
 export const setEditedBook = (bookId: string, book: IBook) => ({
   type: booksContants.EDIT_BOOK_BY_ID,
@@ -30,7 +25,6 @@ export const setDeletedBook = (bookId: string) => ({
 export const booksActions = {
   setAllBooks,
   setBook,
-  getBookById,
   setEditedBook,
   setDeletedBook,
 };

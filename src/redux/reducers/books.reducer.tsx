@@ -4,13 +4,7 @@ import { IBook } from 'models';
 const books = (state = [], action: any) => {
   switch (action.type) {
     case booksContants.SET_ALL_BOOKS:
-      return [...action.books];
-    case booksContants.GET_BOOK_BY_ID: {
-      const book = state.filter((book:IBook) => {
-        return book.id === action.bookId 
-      })
-      return [...book];
-    }
+      return [...action.books];    
     case booksContants.SET_BOOK:
       return [...state, action.book];
     case booksContants.EDIT_BOOK_BY_ID: {
