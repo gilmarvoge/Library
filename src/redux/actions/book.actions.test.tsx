@@ -6,7 +6,7 @@ describe('actions book', () => {
   const { book, bookId } = mocks;
   const books = mocks.booksMock;
   
-  test('should create an action to set books', () => {
+  test('should create an action to set book', () => {
     const addAction = {
       type: booksContants.SET_BOOK, book
     }

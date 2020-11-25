@@ -14,10 +14,10 @@ describe('books reducer', () => {
   });
 
   test('should handle SET_BOOK', () => {
-    const setAction = {
+    const setBookAction = {
       type: booksContants.SET_BOOK, book
     };
-    expect(books([], setAction)).toEqual(booksMock);
+    expect(books([], setBookAction)).toEqual(booksMock);
   });
 
   // test('should handle EDIT_BOOK_BY_ID', () => {

@@ -3,9 +3,10 @@ import { rentsContants } from 'redux/constants';
 import * as mocks from 'utils';
 
 describe('actions rents', () => {
-  const { rent, rentId, rents } = mocks;
+  const { rent, rentId } = mocks;
+  const rents = mocks.rentsMock;
 
-  test('should create an action to set books', () => {
+  test('should create an action to set rents', () => {
     const addAction = {
       type: rentsContants.SET_ALL_RENTS, rents
     }
