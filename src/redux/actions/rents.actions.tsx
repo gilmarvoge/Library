@@ -7,13 +7,13 @@ export const setAllRents = (rents: IRents) => ({
 })
 
 export const setRent = (rent: IRent) => ({
-  type: rentsContants.ADD_RENT,
+  type: rentsContants.SET_RENT,
   rent,
 })
 
-export const setDeletedRent = (id: string) => ({
+export const setDeletedRent = (rentId: string) => ({
   type: rentsContants.DELETE_RENT,
-  id,
+  rentId,
 });
 
 export const rentsActions = {

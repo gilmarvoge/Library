@@ -11,7 +11,7 @@ const books = (state = [], action: any) => {
       })
       return [...book];
     }
-    case booksContants.ADD_BOOK:
+    case booksContants.SET_BOOK:
       return [...state, action.book];
     case booksContants.EDIT_BOOK_BY_ID: {
       const newState = state.map((book:IBook) => {

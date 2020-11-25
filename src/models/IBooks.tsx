@@ -1,6 +1,5 @@
 
 import { IBook } from 'models';
 
-export interface IBooks {
-  books: IBook[],
-}
+export interface IBooks extends Array<IBook>{}
+

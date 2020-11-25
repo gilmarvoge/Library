@@ -1,6 +1,4 @@
 
 import {  IRent} from 'models';
 
-export interface IRents {
-  rents: IRent[],
-}
+export interface IRents extends Array<IRent>{}

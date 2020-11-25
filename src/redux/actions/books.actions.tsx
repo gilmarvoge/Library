@@ -1,13 +1,13 @@
 import { booksContants } from 'redux/constants';
 import { IBook, IBooks } from 'models';
-
-export const setAllBooks = (books: IBooks) => ({
+interface BookItems extends Array<IBook>{}
+export const setAllBooks = (books: BookItems) => ({
   type: booksContants.SET_ALL_BOOKS,
   books
 })
 
 export const setBook = (book: IBook) => ({
-  type: booksContants.ADD_BOOK,
+  type: booksContants.SET_BOOK,
   book,
 })
 

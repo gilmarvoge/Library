@@ -1,8 +1,7 @@
 import * as actions from 'redux/actions';
 import { booksContants } from 'redux/constants';
-import { IBooks } from 'models';
 
-const books = [{
+const books= [{
   'id': '7',
   'author': 'Harmeet SinghMehul',
   'title': 'Learning Web Development with React and Bootstrap',
@@ -21,10 +20,9 @@ const book = {
 const bookId = '1';
 
 describe('actions book', () => {
-
   test('should create an action to set books', () => {
     const addAction = {
-      type: booksContants.ADD_BOOK, book
+      type: booksContants.SET_BOOK, book
     }
     expect(actions.setBook(book)).toEqual(addAction)
   });
@@ -48,6 +46,13 @@ describe('actions book', () => {
       type: booksContants.EDIT_BOOK_BY_ID, bookId, book
     }
     expect(actions.setEditedBook(bookId, book)).toEqual(editAction)
+  });
+
+  test('should create an action to set all books', () => {
+    const editAction = {
+      type: booksContants.SET_ALL_BOOKS, books
+    }
+    expect(actions.setAllBooks(books)).toEqual(editAction)
   });
 });
 

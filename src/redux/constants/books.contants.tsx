@@ -2,6 +2,6 @@ export const booksContants = {
   SET_ALL_BOOKS: 'SET_ALL_BOOKS',
   GET_BOOK_BY_ID: 'GET_BOOK_BY_ID',
   EDIT_BOOK_BY_ID: 'EDIT_BOOK_BY_ID',
-  ADD_BOOK: 'ADD_BOOK',
+  SET_BOOK: 'SET_BOOK',
   DELETE_BOOK: 'DELETE_BOOK',
 }
