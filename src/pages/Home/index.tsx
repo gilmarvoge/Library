@@ -1,26 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { Fab, Grid, Tooltip, Card, CardHeader, Snackbar, CardContent, CardActions, IconButton } from '@material-ui/core';
+import { Fab, Grid, Tooltip, Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
 import { Visibility as VisibilityIcon, Delete as DeleteIcon, MenuBook as MenuBookIcon, Edit as EditIcon, Add as AddIcon } from '@material-ui/icons';
 import Dialogs from 'components/Dialogs';
 import Header from 'components/Header';
 import SearchBar from 'components/SearchBar';
-import { Alert } from 'components';
 import { getBooks, deleteBook, getUserIdStorage, getRents, addRent, deleteRent } from 'services';
 import { setDeletedBook, setAllRents, setAllBooks, setDeletedRent, setRent } from 'redux/actions';
 import { IBooks, IBook, IRent, IRents } from 'models';
+import CustomSnackBar from 'components/SnackBar';
 import './styles.css';
+
 
 function Home(props: any) {
   const { books, rents, dispatch } = props;
-  const { push } = useHistory();
-  const [openSnack, setOpenSnack] = useState(false);
+  const { push } = useHistory(); 
+  const [snack, setSnack] = useState({ open: false, type: '', message: '' });
   const [userId, setUserId] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [showMore, setShowMore] = useState({ open: false, book: {} });
-  const [snackType, setSnackType] = useState('');
-  const [messages, setMessages] = useState('');
 
   useEffect(() => {
     getAllBooks();
@@ -29,19 +28,18 @@ function Home(props: any) {
   const getAllBooks = async () => {
     try {
       const responseBooks = await getBooks();
-      if (responseBooks.data.length)
+      if (responseBooks.data) {
         dispatch(setAllBooks(responseBooks.data));
 
-      const response = await getRents();
-      if (response.data.length)
-        dispatch(setAllRents(response.data));
+        const response = await getRents();
+        if (response.data)
+          dispatch(setAllRents(response.data));
 
-      const user_id = await getUserIdStorage();
-      setUserId(String(user_id));
+        const user_id = await getUserIdStorage();
+        setUserId(String(user_id));
+      }
     } catch (error) {
-      setSnackType('error');
-      setOpenSnack(true);
-      setMessages(error);
+      setSnack({ open: true, type: 'error', message: error });
     }
   }
 
@@ -49,32 +47,24 @@ function Home(props: any) {
     if (bookOwnerRent !== 'UNAVAILABLE') {
       try {
         const response = await deleteBook(id);
-        if (response.data.length)
+        if (response.data) {
           dispatch(setDeletedBook(id));
-        setSnackType('success');
-        setOpenSnack(true);
-        setMessages(`Livro deletado com sucesso`);
+          setSnack({ open: true, type: 'success', message: 'Livro excluído com sucesso' });
+        }
       } catch (error) {
-        setSnackType('error');
-        setOpenSnack(true);
-        setMessages(error);
+        setSnack({ open: true, type: 'error', message: error });
       }
     }
-    else {
-      setSnackType('warning');
-      setOpenSnack(true);
-      setMessages('Você não pode remover um livro alugado');
-    }
+    else
+      setSnack({ open: true, type: 'warning', message: 'Você não pode remover um livro alugado' })
+
   }
 
   const handleEditBook = (id: string, bookOwnerRent: string) => {
     if (bookOwnerRent !== 'UNAVAILABLE')
       push(`/edit/${id}`);
-    else {
-      setSnackType('warning');
-      setOpenSnack(true);
-      setMessages('Você não pode editar um livro alugado');
-    }
+    else
+      setSnack({ open: true, type: 'warning', message: 'Você não pode editar um livro alugado' });
   }
 
   const filterHasBooksRented = (bookId: string) => {
@@ -93,38 +83,30 @@ function Home(props: any) {
   }
 
   const handleRentBook = async (book: IBook, bookOwnerRent: string) => {
-    if (bookOwnerRent === 'AVAILABLE') {
-      const rentBook = { book_id: String(book.id), user_id: userId }
-      const response = await addRent(rentBook);
-      if (response.data.length) {
-        dispatch(setRent(rentBook));
-        setSnackType('success');
-        setOpenSnack(true);
-        setMessages(`Você alugou o livro ${book.title}`);
-      }
-    }
-    else if (bookOwnerRent === 'RENTED') {
-      const rent = rents.filter((rent: IRent) => rent.book_id === book.id);
-      const response = await deleteRent(rent.id);
-      if (response.data.length) {
-        dispatch(setDeletedRent(rent.id));
-        setSnackType('success');
-        setOpenSnack(true);
-        setMessages(`Você devolveu o livro ${book.title}`)
-      }
-    }
-    else {
-      setSnackType('warning');
-      setOpenSnack(true);
-      setMessages('Este livro está alugado');
-    }
-  }
+    if (bookOwnerRent !== 'UNAVAILABLE') {
+      const rentFilter = rents.filter((rent: IRent) => rent.book_id === book.id);
 
-  const handleCloseSnack = (event: any, reason: string) => {
-    if (reason === 'clickaway')
-      return;
-    setOpenSnack(false);
-  };
+      if (rentFilter.length > 0) {
+        const rent = Object.assign({}, ...rentFilter)
+        console.log("encontou ", rentFilter.length > 0)
+        const response = await deleteRent(rent.id);
+        if (response.data) {
+          dispatch(setDeletedRent(rent.id));
+          setSnack({ open: true, type: 'success', message: `Você devolveu o livro ${book.title}` });
+        }
+      }
+      else {
+        console.log("nao enconttrou ", rentFilter.length > 0)
+        const rentBook = { book_id: String(book.id), user_id: userId }
+        const response = await addRent(rentBook);
+        if (response.data) {
+          dispatch(setRent(response.data));
+          setSnack({ open: true, type: 'success', message: `Você alugou o livro ${book.title}` });
+        }
+      }
+    } else
+      setSnack({ open: true, type: 'warning', message: 'Este livro está alugado' });
+  }
 
   return (
     <div id='page-home' data-testid='home'>
@@ -218,14 +200,10 @@ function Home(props: any) {
         </Fab>
       </Tooltip>
       {
-        messages &&
-        <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleCloseSnack} >
-          <Alert severity={snackType} onClose={handleCloseSnack} >
-            {messages}
-          </Alert>
-        </Snackbar>
+        snack.open &&
+        < CustomSnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
       }
-    </div>
+    </div >
   )
 }
 

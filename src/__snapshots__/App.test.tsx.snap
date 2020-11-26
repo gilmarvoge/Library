@@ -5,88 +5,103 @@ exports[`render app snapshot 1`] = `
   <div
     id="page-login"
   >
-    <form
-      id="formuser"
-      onSubmit={[Function]}
+    <div
+      id="page-login-content"
     >
-      <header>
-        <img
-          alt="Biblioteca"
-          src="logo.svg"
-        />
-        <h1>
-          Login
-        </h1>
-      </header>
-      <fieldset>
-        <div
-          className="field"
-        >
-          <label
-            htmlFor="user"
-          >
-            Usuario
-          </label>
-          <input
-            id="user"
-            name="user"
-          />
-        </div>
-        <div
-          className="field"
-        >
-          <label
-            htmlFor="password"
-          >
-            Senha
-          </label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-          />
-        </div>
-      </fieldset>
-      <button
-        type="submit"
+      <form
+        id="formuser"
+        onSubmit={[Function]}
       >
-        <span>
-          <svg
-            fill="none"
-            height="1em"
-            stroke="currentColor"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            style={
-              Object {
-                "color": undefined,
-              }
-            }
-            viewBox="0 0 24 24"
-            width="1em"
-            xmlns="http://www.w3.org/2000/svg"
+        <header>
+          <img
+            alt="Biblioteca"
+            src="logo.svg"
+          />
+          <h1>
+            Login
+          </h1>
+        </header>
+        <fieldset>
+          <div
+            className="field"
           >
-            <path
-              d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
+            <label
+              htmlFor="user"
+            >
+              Usuário
+            </label>
+            <input
+              id="user"
+              name="user"
+              type="text"
             />
-            <polyline
-              points="10 17 15 12 10 7"
+          </div>
+          <div
+            className="field"
+          >
+            <label
+              htmlFor="password"
+            >
+              Senha
+            </label>
+            <input
+              id="password"
+              name="password"
+              type="password"
             />
-            <line
-              x1="15"
-              x2="3"
-              y1="12"
-              y2="12"
-            />
-          </svg>
-        </span>
-        <strong>
-          Entrar
-        </strong>
-      </button>
-    </form>
-    
+          </div>
+        </fieldset>
+        <button
+          type="submit"
+        >
+          <span>
+            <svg
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              style={
+                Object {
+                  "color": undefined,
+                }
+              }
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"
+              />
+              <polyline
+                points="10 17 15 12 10 7"
+              />
+              <line
+                x1="15"
+                x2="3"
+                y1="12"
+                y2="12"
+              />
+            </svg>
+          </span>
+          <strong>
+            Entrar
+          </strong>
+        </button>
+        <div
+          id="page-login-criar"
+        >
+          Não tem uma conta?
+          <a
+            href="/signup"
+            onClick={[Function]}
+          >
+             Registre-se
+          </a>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 `;

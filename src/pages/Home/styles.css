@@ -1,12 +1,11 @@
 #page-home {
-  height:100vh;
+  height: 100vh;
   width: 100%;
   margin: 0;
   background: url("../../assets/home-background.svg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: bottom right;
-overflow: hidden;
 }
 
 #page-home .content {
@@ -36,7 +35,7 @@ overflow: hidden;
 
 .card-header-title {
   font-size: 18px !important;
-  width: 120px;  
+  width: 120px;
   height: 50px;
   white-space: wrap !important;
   overflow-wrap: break-word;

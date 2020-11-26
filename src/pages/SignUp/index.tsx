@@ -1,31 +1,34 @@
 import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { FiLogIn } from 'react-icons/fi';
+import { FiSmile } from 'react-icons/fi';
 import CustomSnackBar from 'components/SnackBar';
-import { login, getLogin } from 'services';
+import { addUser, validateUser } from 'services';
 import logo from '../../assets/logo.svg';
-import './styles.css';
 
-function Login() {
-    const { push } = useHistory();
-    const { register, handleSubmit, errors } = useForm();
+function SignUp() {   
+    const { register, handleSubmit, errors, reset } = useForm();
     const [snack, setSnack] = useState({ open: false, type: '', message: '' });
 
     const handleSubmitUser = async (data: any, event: any) => {
         event.preventDefault();
         const { user, password } = data;
         try {
-            const response = await getLogin(user, password);
-            if (response.data.length) {
-                const result = Object.assign({}, ...response.data);
-                login(String(result.id));
-
-                push('/');
-            } else
-                setSnack({ open: true, type: 'error', message: 'Usuário ou senha incorretos' });
+            const newUser = { user, password };
+            const responseValidate = await validateUser(user);
+            if (responseValidate.data) {
+                console.log('sdsdsdsd',responseValidate.data)
+                setSnack({ open: true, type: 'error', message: 'Exte usuário já possui cadastro' });
+            } else {
+                const response = await addUser(newUser);            
+                if (response.data) {
+                    reset();
+                    setSnack({ open: true, type: 'success', message: 'Usuário cadastrado com sucesso' });
+                } else
+                    setSnack({ open: true, type: 'error', message: `Não foi possível realizar o cadastro ${response.status} ${response.statusText}` });
+            }
         } catch (error) {
-            setSnack({ open: true, type: 'error', message: `Não foi possível realizar o login ${error}` });
+            setSnack({ open: true, type: 'error', message: `Não foi possível realizar o cadastro ${error}` });
         }
     }
 
@@ -35,7 +38,7 @@ function Login() {
                 <form id='formuser' onSubmit={handleSubmit(handleSubmitUser)}>
                     <header>
                         <img src={logo} alt='Biblioteca' />
-                        <h1>Login</h1>
+                        <h1>Crie sua conta</h1>
                     </header>
                     <fieldset>
                         <div className='field'>
@@ -59,14 +62,15 @@ function Login() {
                             {errors.password && <span role="alert">{errors.password.message}</span>}
                         </div>
                     </fieldset>
+
                     <button type='submit'>
                         <span>
-                            <FiLogIn />
+                            <FiSmile />
                         </span>
-                        <strong>Entrar</strong>
+                        <strong>Cadastrar</strong>
                     </button>
-                    <div id='page-login-criar'>Não tem uma conta?
-                        <Link to='/signup'> Registre-se</Link>
+                    <div id='page-login-criar'>Já possui cadastro?
+                        <Link to='/login'> Login</Link>
                     </div>
                 </form>
                 {
@@ -78,4 +82,4 @@ function Login() {
     )
 }
 
-export default Login;
+export default SignUp;

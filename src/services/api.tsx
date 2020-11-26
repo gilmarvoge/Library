@@ -11,6 +11,10 @@ export const addUser = async (user: IUser) => {
   return await api.post(apiServices.userPath, user);
 }
 
+export const validateUser = async (user: string,) => {
+  return await api.get(apiServices.userPath, { params: { user } });
+}
+
 export const getLogin = async (user: string, password: string) => {
   return await api.get(apiServices.userPath, { params: { user, password } })
 }
@@ -28,7 +32,7 @@ export const editBook = async (id: string, book: IBook) => {
 }
 
 export const deleteBook = async (id: string) => {
-  return await api.delete(apiServices.bookPath, { params: { id } });
+  return await api.delete(`${apiServices.bookPath}/${id}`);
 }
 
 export const getRents = async () => {
@@ -40,5 +44,5 @@ export const addRent = async (rent: IRent) => {
 }
 
 export const deleteRent = async (id: string) => {
-  return await api.delete(apiServices.rentPath, { params: { id } });
+  return await api.delete(`${apiServices.rentPath}/${id}`);
 }

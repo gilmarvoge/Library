@@ -17,9 +17,11 @@ const books = (state = [], action: any) => {
       return [...newState];
     }
     case booksContants.DELETE_BOOK: {
+      console.log("delete reducer ",action.bookId)
       const newState = state.filter((book:IBook) => {
         return book.id !== action.bookId
       })
+      console.log("delete reducer  newState",newState)
       return [...newState]
     }
     default:

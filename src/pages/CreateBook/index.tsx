@@ -5,7 +5,8 @@ import { useForm } from 'react-hook-form';
 import Snackbar from '@material-ui/core/Snackbar';
 import { Alert } from 'components';
 import Header from 'components/Header';
-import { IBooks, IBook, IUser } from 'models';
+import CustomSnackBar from 'components/SnackBar';
+import { IBooks, IBook } from 'models';
 import { addBook, editBook } from 'services';
 import { setBook, setEditedBook } from 'redux/actions';
 import './styles.css';
@@ -19,6 +20,7 @@ function CreateEditBook(props: any) {
     const { bookId } = useParams<ParamTypes>();
     const { dispatch, books } = props;
     const [messages, setMessages] = useState('');
+    const [snack, setSnack] = useState({ open: false, type: '', message: '' });
     const [bookToEdit, setBookToEdit] = useState<IBook>();
     const [openSnack, setOpenSnack] = useState(false);
     const { register, handleSubmit, errors } = useForm();
@@ -32,6 +34,7 @@ function CreateEditBook(props: any) {
 
     const handleSubmitBook = async (data: any, event: any) => {
         event.preventDefault();
+        console.log("criaa")
         const { title, author, description, image_url } = data;
         const book = { author, title, description, image_url };
         if (title !== '' && author !== '' && description !== '' && image_url) {
@@ -46,17 +49,11 @@ function CreateEditBook(props: any) {
             }
             push('/');
         }
-        else {
-            setMessages('Campos não preenchidos');
-            setOpenSnack(true);
-        }
+        else
+            setSnack({ open: true, type: 'error', message: 'Campos não preenchidos' });
+
     }
 
-    const handleCloseSnack = (event: any, reason: string) => {
-        if (reason === 'clickaway')
-            return;
-        setOpenSnack(false);
-    };
 
     return (
         <div id='page-createedit-book' data-testid='create-book'>
@@ -68,6 +65,7 @@ function CreateEditBook(props: any) {
                         <label htmlFor='title'>Título</label>
                         <input
                             defaultValue={bookToEdit?.title}
+                            type='text'
                             name='title'
                             id='title'
                             ref={register({ required: 'Digite o nome do livro' })}
@@ -79,6 +77,7 @@ function CreateEditBook(props: any) {
                         <label htmlFor='author'>Autor</label>
                         <input
                             defaultValue={bookToEdit?.author}
+                            type='text'
                             name='author'
                             id='author'
                             ref={register({ required: 'Digite o nome do autor' })}
@@ -89,6 +88,7 @@ function CreateEditBook(props: any) {
                         <label htmlFor='description'>Descrição</label>
                         <input
                             defaultValue={bookToEdit?.description}
+                            type='text'
                             name='description'
                             id='description'
                             ref={register({ required: 'Digite a descrição do livro' })}
@@ -99,6 +99,7 @@ function CreateEditBook(props: any) {
                         <label htmlFor='image_url'>Link da imagem</label>
                         <input
                             defaultValue={bookToEdit?.image_url}
+                            type='text'
                             name='image_url'
                             id='image_url'
                             ref={register({ required: 'Digite o link da imagem do livro' })}
@@ -110,18 +111,15 @@ function CreateEditBook(props: any) {
                     {bookId && bookId !== '' ? 'Salvar livro' : 'Cadastrar livro'}
                 </button>
             </form>
-            {messages &&
-                <Snackbar open={openSnack} autoHideDuration={3000} onClose={handleCloseSnack} >
-                    <Alert severity='error' onClose={handleCloseSnack} >
-                        {messages}
-                    </Alert>
-                </Snackbar>
+            {
+                snack.open &&
+                <CustomSnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
             }
         </div>
     )
 }
 
-const mapStateToProps = ({ books }: { books: IBooks  }) => ({
+const mapStateToProps = ({ books }: { books: IBooks }) => ({
     books: books
 });
 
