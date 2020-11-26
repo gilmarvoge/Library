@@ -21,6 +21,7 @@
 .card-root {
   width: 200px;
   height: 350px;
+  border-radius: 8px !important;
 }
 
 .card-header-root {
