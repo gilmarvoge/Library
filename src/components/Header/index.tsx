@@ -10,7 +10,7 @@ import logo from '../../assets/logo.svg';
 import './styles.css';
 
 function Header(props: any) {
-  const { search, dispatch } = props;
+  const { search } = props;
   let { location, push } = useHistory();
 
   const signOut = () => {
@@ -21,25 +21,27 @@ function Header(props: any) {
   return (
     <div id='page-header'>
       <header data-testid='header'>
-        <div id='header-flex'>
-          {location?.pathname !== '/' &&
-            <Tooltip title='Voltar' placement='bottom'>
-              <IconButton onClick={() => push('/')}>
-                <ArrowBackIcon fontSize='large' />
-              </IconButton>
-            </Tooltip>
-          }
-          <div id='header-logo'>
+        <div className='header-logo'>
+          <div id='header-actions-start'>
+            {location?.pathname !== '/' &&
+              <Tooltip title='Voltar' placement='bottom'>
+                <IconButton onClick={() => push('/')}>
+                  <ArrowBackIcon fontSize='large' />
+                </IconButton>
+              </Tooltip>
+            }
+          </div>
+          <div id='header-logo-title'>
             <img src={logo} alt='Biblioteca' />
-            <span>
+            <span className='span'>
               Biblioteca
-         </span>
+            </span>
           </div>
         </div>
-        <div id='header-flex'>
+        <div className='header-search'>
           {search}
         </div>
-        <div id='header-flex' >
+        <div className='header-actions-end'>
           <Tooltip title='Sair' placement='bottom'>
             <IconButton onClick={signOut} >
               <ExitToAppIcon fontSize='large' />

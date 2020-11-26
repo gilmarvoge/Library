@@ -1,43 +1,21 @@
-import React, { useState, FormEvent, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { IBook } from 'models';
-import './styles.css';
+import React from 'react';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
+import { Search as SearchIcon } from '@material-ui/icons';
 
-export interface Props {
-  books: [];
-  setFilteredBooks: Function;
-}
-
-const SearchBookPage = ((props: Props) => {
-  const { books, setFilteredBooks } = props;
-  const [searchTerm, setSearchTerm] = useState('');
-
-  const handleChange = (event: FormEvent<HTMLInputElement>) => { 
-    setSearchTerm(event.currentTarget.value);
-  };
-
-  useEffect(() => {
-    if (searchTerm !== '') {
-      const results = books.filter((book: IBook) =>
-        book.title.toLowerCase().includes(searchTerm) ||
-        book.author.toLowerCase().includes(searchTerm)
-      );
-      setFilteredBooks(results);
-    }
-  }, [searchTerm]);
-
+const SearchBookPage = (({ ...rest }) => {
   return (
-    <div className='search-books-bar'>
-      <Link to='/' className='close-search'>Close </Link>
-      <div className='search-books-input-wrapper'>
-        <input 
-         placeholder='Pesquise por título ou autor'
-         aria-label='search-input'
-         name='author'
-          onChange={handleChange}
-        />
-      </div>
-    </div>
+    <TextField
+      id="filled-start-adornment"
+      placeholder='Pesquise por título ou autor'
+
+      {...rest}
+      InputProps={{
+        startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+      }}
+      fullWidth
+      variant='outlined'
+    />
   )
 });
 

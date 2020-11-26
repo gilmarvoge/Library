@@ -28,7 +28,7 @@ export const addBook = async (book: IBook) => {
 }
 
 export const editBook = async (id: string, book: IBook) => {
-  return await api.put(apiServices.bookPath, { params: id, book });
+  return await api.put(`${apiServices.bookPath}/${id}`, book);
 }
 
 export const deleteBook = async (id: string) => {

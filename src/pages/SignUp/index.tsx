@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FiSmile } from 'react-icons/fi';
-import CustomSnackBar from 'components/SnackBar';
+import { SnackBar } from 'components';
 import { addUser, validateUser } from 'services';
 import logo from '../../assets/logo.svg';
 
-function SignUp() {   
+function SignUp() {
     const { register, handleSubmit, errors, reset } = useForm();
     const [snack, setSnack] = useState({ open: false, type: '', message: '' });
 
@@ -17,10 +17,10 @@ function SignUp() {
             const newUser = { user, password };
             const responseValidate = await validateUser(user);
             if (responseValidate.data) {
-                console.log('sdsdsdsd',responseValidate.data)
+                console.log('sdsdsdsd', responseValidate.data)
                 setSnack({ open: true, type: 'error', message: 'Exte usuário já possui cadastro' });
             } else {
-                const response = await addUser(newUser);            
+                const response = await addUser(newUser);
                 if (response.data) {
                     reset();
                     setSnack({ open: true, type: 'success', message: 'Usuário cadastrado com sucesso' });
@@ -75,7 +75,7 @@ function SignUp() {
                 </form>
                 {
                     snack.open &&
-                    < CustomSnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
+                    < SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
                 }
             </div>
         </div>

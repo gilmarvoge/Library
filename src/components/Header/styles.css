@@ -5,17 +5,8 @@
 #page-header header {
   margin-top: 28px;
   display: flex;
+  width: 100%;
   justify-content: space-between;
-  margin: 25px 25px 0;
-}
-
-#header-flex{
-  flex: 1 1 ;
-}
-
-#header-logo {
-  display: flex;
-  align-items: center;
 }
 
 #page-header header a {
@@ -31,7 +22,31 @@
   color: var(--primary-color);
 }
 
-#page-header header span {
+.header-logo {
+  display: flex;
+  justify-content: space-between;
+  min-width: 30%;
+  align-self: center;
+}
+
+.header-logo-title {
+  display: flex;
+}
+
+.header-actions-end {
+  min-width: 30%;
+  align-self: center;
+  display: flex;
+  justify-content: flex-end
+}
+
+.header-search {
+  /* flex: 1 ; */
+  width: 50%;
+  align-self: center;
+}
+
+.span {
   color: var(--title-color);
   font-weight: bold;
   font-size: 2rem;
@@ -40,7 +55,7 @@
 }
 
 @media (max-width: 650px) {
-  #header-logo {
-    display: none;    
-  }
+  /* #header-logo {
+    display: none;
+  } */
 }

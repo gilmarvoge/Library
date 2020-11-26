@@ -28,6 +28,6 @@ describe('test create book page', () => {
     await waitFor(async () => {
       fireEvent.submit(screen.getByText('Cadastrar'));
     });
-    expect(await screen.queryAllByRole('alert')).toHaveLength(0);
+    expect(screen.queryAllByRole('alert')).toHaveLength(0);
   });
 });

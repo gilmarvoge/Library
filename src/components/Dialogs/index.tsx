@@ -65,7 +65,6 @@ export default function CustomizedDialogs(props: any) {
           <Typography gutterBottom>
             {book.author}
           </Typography>
-
         </DialogContent>
         <DialogContent
           classes={{

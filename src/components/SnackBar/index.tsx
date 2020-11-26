@@ -3,7 +3,7 @@ import { Snackbar } from '@material-ui/core';
 import { ISnackbar } from 'models';
 import { Alert } from 'components';
 
-function CustomSnackBar(props: ISnackbar) {
+const CustomSnackBar = (props: ISnackbar) => {
   const { type, message, open, onClose } = props;
 
   const handleCloseSnack = (event: any, reason: string) => {

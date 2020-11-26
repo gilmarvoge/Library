@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Fab, Grid, Tooltip, Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
@@ -9,28 +9,24 @@ import SearchBar from 'components/SearchBar';
 import { getBooks, deleteBook, getUserIdStorage, getRents, addRent, deleteRent } from 'services';
 import { setDeletedBook, setAllRents, setAllBooks, setDeletedRent, setRent } from 'redux/actions';
 import { IBooks, IBook, IRent, IRents } from 'models';
-import CustomSnackBar from 'components/SnackBar';
+import { SnackBar } from 'components';
 import './styles.css';
-
 
 function Home(props: any) {
   const { books, rents, dispatch } = props;
-  const { push } = useHistory(); 
+  const { push } = useHistory();
   const [snack, setSnack] = useState({ open: false, type: '', message: '' });
   const [userId, setUserId] = useState('');
   const [filteredBooks, setFilteredBooks] = useState([]);
   const [showMore, setShowMore] = useState({ open: false, book: {} });
+  const [querySearch, setQuerySearch] = useState('');
 
-  useEffect(() => {
-    getAllBooks();
-  }, [userId]);
-
-  const getAllBooks = async () => {
+  const getAllBooks = useCallback(async () => {
     try {
       const responseBooks = await getBooks();
       if (responseBooks.data) {
         dispatch(setAllBooks(responseBooks.data));
-
+        setFilteredBooks(responseBooks.data);
         const response = await getRents();
         if (response.data)
           dispatch(setAllRents(response.data));
@@ -41,13 +37,31 @@ function Home(props: any) {
     } catch (error) {
       setSnack({ open: true, type: 'error', message: error });
     }
-  }
+  }, [dispatch]);
+
+  useEffect(() => {
+    const results = books.filter((book: IBook) =>
+      book.title.toLowerCase().includes(querySearch.toLowerCase()) ||
+      book.author.toLowerCase().includes(querySearch.toLowerCase())
+    );
+    setFilteredBooks(results);
+  }, [querySearch, books]);
+
+  useEffect(() => {
+    getAllBooks();
+  }, [getAllBooks]);
 
   const handleDeleteBook = async (id: string, bookOwnerRent: string) => {
     if (bookOwnerRent !== 'UNAVAILABLE') {
       try {
         const response = await deleteBook(id);
         if (response.data) {
+          const rentFilter = rents.filter((rent: IRent) => rent.book_id === id);
+          //deletar aluguel vinculado ao book
+          if (rentFilter.length > 0) {
+            const rent = Object.assign({}, ...rentFilter)
+            await deleteRent(rent.id);
+          }
           dispatch(setDeletedBook(id));
           setSnack({ open: true, type: 'success', message: 'Livro excluído com sucesso' });
         }
@@ -56,8 +70,7 @@ function Home(props: any) {
       }
     }
     else
-      setSnack({ open: true, type: 'warning', message: 'Você não pode remover um livro alugado' })
-
+      setSnack({ open: true, type: 'warning', message: 'Você não pode remover um livro alugado' });
   }
 
   const handleEditBook = (id: string, bookOwnerRent: string) => {
@@ -88,7 +101,6 @@ function Home(props: any) {
 
       if (rentFilter.length > 0) {
         const rent = Object.assign({}, ...rentFilter)
-        console.log("encontou ", rentFilter.length > 0)
         const response = await deleteRent(rent.id);
         if (response.data) {
           dispatch(setDeletedRent(rent.id));
@@ -96,7 +108,6 @@ function Home(props: any) {
         }
       }
       else {
-        console.log("nao enconttrou ", rentFilter.length > 0)
         const rentBook = { book_id: String(book.id), user_id: userId }
         const response = await addRent(rentBook);
         if (response.data) {
@@ -108,14 +119,19 @@ function Home(props: any) {
       setSnack({ open: true, type: 'warning', message: 'Este livro está alugado' });
   }
 
+  const handleSearch = useCallback((e) => {
+    setQuerySearch(e.target.value);
+  }, []);
+
   return (
     <div id='page-home' data-testid='home'>
-      <Header search={<SearchBar books={books} setFilteredBooks={(filtered: []) => setFilteredBooks(filtered)} />} />
+      <Header search={<SearchBar onChange={handleSearch} />}
+      />
       {showMore && <Dialogs open={showMore.open} book={showMore.book} close={() => setShowMore({ open: false, book: {} })} />}
       <div className='content'>
         <Grid container spacing={2} justify='center' >
-          {(filteredBooks.length ? filteredBooks : books).map((book: IBook) => {
-            const bookOwnerRent = filterHasBooksRented(String(book.id));
+          {filteredBooks && filteredBooks.map((book: IBook) => {
+            const bookOwnerRent = filterHasBooksRented(String(book.id));          
             return (
               <Grid item key={book.id}>
                 <Card
@@ -201,7 +217,7 @@ function Home(props: any) {
       </Tooltip>
       {
         snack.open &&
-        < CustomSnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
+        < SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
       }
     </div >
   )

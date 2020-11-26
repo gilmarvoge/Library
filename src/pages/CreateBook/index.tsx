@@ -2,13 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { useForm } from 'react-hook-form';
-import Snackbar from '@material-ui/core/Snackbar';
-import { Alert } from 'components';
 import Header from 'components/Header';
-import CustomSnackBar from 'components/SnackBar';
+import { SnackBar } from 'components';
 import { IBooks, IBook } from 'models';
 import { addBook, editBook } from 'services';
 import { setBook, setEditedBook } from 'redux/actions';
+import { isValidUrl, urlImageNotFound } from 'utils'
 import './styles.css';
 
 interface ParamTypes {
@@ -19,10 +18,8 @@ function CreateEditBook(props: any) {
     const { push } = useHistory();
     const { bookId } = useParams<ParamTypes>();
     const { dispatch, books } = props;
-    const [messages, setMessages] = useState('');
     const [snack, setSnack] = useState({ open: false, type: '', message: '' });
     const [bookToEdit, setBookToEdit] = useState<IBook>();
-    const [openSnack, setOpenSnack] = useState(false);
     const { register, handleSubmit, errors } = useForm();
 
     useEffect(() => {
@@ -34,18 +31,23 @@ function CreateEditBook(props: any) {
 
     const handleSubmitBook = async (data: any, event: any) => {
         event.preventDefault();
-        console.log("criaa")
-        const { title, author, description, image_url } = data;
-        const book = { author, title, description, image_url };
+
+        let { title, author, description, image_url } = data;
+        const checkImageUrl = isValidUrl(image_url);
+        if (!checkImageUrl)
+            image_url = urlImageNotFound;
+        const book = { id: bookId, author, title, description, image_url };
         if (title !== '' && author !== '' && description !== '' && image_url) {
             if (bookId && bookId !== '') {
+
                 let response = await editBook(bookId, book);
-                if (response.data.length)
+                if (response.data) {
                     dispatch(setEditedBook(bookId, book));
+                }
             } else {
                 let response = await addBook(book);
-                if (response.data.length)
-                    dispatch(setBook(book));
+                if (response.data)
+                    dispatch(setBook(response.data));
             }
             push('/');
         }
@@ -113,7 +115,7 @@ function CreateEditBook(props: any) {
             </form>
             {
                 snack.open &&
-                <CustomSnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
+                <SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
             }
         </div>
     )
