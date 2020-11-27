@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
-import { FiBook } from 'react-icons/fi';
+import { FiBook, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
 import { SnackBar, Header } from 'components';
 import { IBooks, IBook } from 'models';
@@ -42,9 +42,8 @@ function CreateEditBook(props: CreateEditBookProps) {
         if (!checkImageUrl)
             image_url = urlImageNotFound;
         const book = { id: bookId, author, title, description, image_url };
-        if (title !== '' && author !== '' && description !== '' && image_url) {
-            if (bookId && bookId !== '') {
-
+        if (title && author && description && image_url) {
+            if (bookId) {
                 let response = await editBook(bookId, book);
                 if (response.data) {
                     dispatch(setEditedBook(bookId, book));
@@ -115,9 +114,9 @@ function CreateEditBook(props: CreateEditBookProps) {
                     </fieldset>
                     <button type='submit' data-testid='submit-button'>
                         <span>
-                            <FiBook />
+                            {bookId ? <FiSave /> : <FiBook />}
                         </span>
-                        <strong>  {bookId && bookId !== '' ? 'Salvar livro' : 'Cadastrar livro'}</strong>
+                        <strong>  {bookId ? 'Salvar livro' : 'Cadastrar livro'}</strong>
                     </button>
                 </form>
                 {

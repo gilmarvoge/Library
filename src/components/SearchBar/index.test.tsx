@@ -8,7 +8,7 @@ test('render search value', () => {
   const history = createMemoryHistory();
   render(
     <Router history={history}>
-      <SearchBar books={[]} setFilteredBooks={() => { }} />
+      <SearchBar books={[]} />
     </Router>
   );
   fireEvent.change(screen.getByPlaceholderText('Pesquise por título ou autor'), { target: { value: 'react' } });

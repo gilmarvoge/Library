@@ -6,6 +6,40 @@ exports[`render app snapshot 1`] = `
     id="page-login"
   >
     <div
+      id="page-header"
+    >
+      <header
+        data-testid="header"
+      >
+        <div
+          className="header-logo"
+        >
+          <div
+            className="header-actions-start"
+          />
+          <div
+            className="header-logo-title"
+          >
+            <img
+              alt="Biblioteca"
+              src="logo.svg"
+            />
+            <span
+              className="span"
+            >
+              Biblioteca
+            </span>
+          </div>
+        </div>
+        <div
+          className="header-search"
+        />
+        <div
+          className="header-actions-end"
+        />
+      </header>
+    </div>
+    <div
       id="page-login-content"
     >
       <form
@@ -13,10 +47,6 @@ exports[`render app snapshot 1`] = `
         onSubmit={[Function]}
       >
         <header>
-          <img
-            alt="Biblioteca"
-            src="logo.svg"
-          />
           <h1>
             Login
           </h1>
