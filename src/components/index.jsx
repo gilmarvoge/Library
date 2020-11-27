@@ -1,5 +1,5 @@
 import Alert from './Alert';
-import SnackBar from './Snackbar'
+import SnackBar from './SnackBar/index';
 
 export {
   Alert,

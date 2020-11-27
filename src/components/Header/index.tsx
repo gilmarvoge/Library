@@ -22,7 +22,7 @@ function Header(props: any) {
     <div id='page-header'>
       <header data-testid='header'>
         <div className='header-logo'>
-          <div id='header-actions-start'>
+          <div className='header-actions-start'>
             {location?.pathname !== '/' &&
               <Tooltip title='Voltar' placement='bottom'>
                 <IconButton onClick={() => push('/')}>
@@ -31,7 +31,7 @@ function Header(props: any) {
               </Tooltip>
             }
           </div>
-          <div id='header-logo-title'>
+          <div className='header-logo-title'>
             <img src={logo} alt='Biblioteca' />
             <span className='span'>
               Biblioteca
