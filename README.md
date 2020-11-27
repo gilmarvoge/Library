@@ -11,12 +11,17 @@ Usuário para login, caso não deseje criar um novo :
  Usuário: admin
  Senha: admin
   
-Passos para executar os teste unitários do app:
+Executar os teste unitários do app:
 - npm test
 
-Docker
-buildar a imagem
-docker build -t sample:dev .
- criar o container 
-docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm sample:dev
-localhost:3001/
+Docker em modo de desenvolvimento
+Build imagem do app
+docker build -t library:dev .
+
+Start docker image
+docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm library:dev
+
+Criar o Container a partir da imagem
+docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm library:dev
+
+Aplicação pelo docker roda no localhost:3001
