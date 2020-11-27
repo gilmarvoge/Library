@@ -24,13 +24,16 @@
 
 .header-logo {
   display: flex;
-  justify-content: space-between;
   min-width: 30%;
   align-self: center;
 }
 
 .header-logo-title {
   display: flex;
+}
+
+.header-actions-start {
+  align-self: center;
 }
 
 .header-actions-end {
@@ -55,7 +58,23 @@
 }
 
 @media (max-width: 650px) {
-  /* #header-logo {
+  .header-logo-title {
     display: none;
-  } */
+  }
+  #page-header {
+    margin: auto;
+  }
+  #page-header header {
+    justify-content: center;
+  }
+  .header-actions-end {
+    justify-content: center;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .header-logo-title {
+    display: none;
+  }
 }

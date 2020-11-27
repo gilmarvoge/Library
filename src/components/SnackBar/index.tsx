@@ -1,9 +1,9 @@
 import React from 'react';
-import { Snackbar } from '@material-ui/core';
+import { Snackbar as CustomSnack} from '@material-ui/core';
 import { ISnackbar } from 'models';
 import { Alert } from 'components';
 
-const CustomSnackBar = (props: ISnackbar) => {
+const SnackBar = (props: ISnackbar) => {
   const { type, message, open, onClose } = props;
 
   const handleCloseSnack = (event: any, reason: string) => {
@@ -13,12 +13,12 @@ const CustomSnackBar = (props: ISnackbar) => {
   };
 
   return (
-    <Snackbar data-testid='alert' open={open} autoHideDuration={3000} onClose={handleCloseSnack} >
+    <CustomSnack data-testid='alert' open={open} autoHideDuration={3000} onClose={handleCloseSnack} >
       <Alert severity={type} onClose={handleCloseSnack} >
         {message}
       </Alert>
-    </Snackbar>
+    </CustomSnack>
   )
 }
 
-export default CustomSnackBar;
+export default SnackBar;
