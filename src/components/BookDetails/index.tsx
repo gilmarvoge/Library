@@ -49,21 +49,27 @@ const DialogContent = withStyles((theme: Theme) => ({
 }))(MuiDialogContent);
 
 export default function CustomizedDialogs(props: any) {
-  const { open, book, close } = props;
+  const { open, book, onClose } = props;
+  const { title, author, description, image_url } = book;
 
   const handleClose = () => {
-    close();
+    onClose(false);
   };
 
   return (
     <div>
-      <Dialog onClose={handleClose} open={open}>
+      <Dialog
+        fullWidth={true} 
+        maxWidth='sm'
+        onClose={handleClose}
+        open={open}
+      >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          {book.title}
+          {title}
         </DialogTitle>
         <DialogContent >
           <Typography gutterBottom>
-            {book.author}
+            {author}
           </Typography>
         </DialogContent>
         <DialogContent
@@ -71,10 +77,10 @@ export default function CustomizedDialogs(props: any) {
             root: 'dialog-content-root',
           }}
         >
-          <img src={book.image_url} className='media' alt='' />
+          <img src={image_url} className='media' alt='' />
         </DialogContent>
         <DialogContent dividers>
-          {book.description}
+          {description}
         </DialogContent>
       </Dialog>
     </div>

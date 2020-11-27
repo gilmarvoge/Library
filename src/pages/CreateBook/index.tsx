@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import { FiBook } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
-import Header from 'components/Header';
-import { SnackBar } from 'components';
+import { SnackBar, Header } from 'components';
 import { IBooks, IBook } from 'models';
 import { addBook, editBook } from 'services';
 import { setBook, setEditedBook } from 'redux/actions';
@@ -14,10 +14,15 @@ interface ParamTypes {
     bookId: string
 }
 
-function CreateEditBook(props: any) {
+interface CreateEditBookProps {
+    books: IBooks;
+}
+
+function CreateEditBook(props: CreateEditBookProps) {
     const { push } = useHistory();
+    const dispatch = useDispatch();
     const { bookId } = useParams<ParamTypes>();
-    const { dispatch, books } = props;
+    const { books } = props;
     const [snack, setSnack] = useState({ open: false, type: '', message: '' });
     const [bookToEdit, setBookToEdit] = useState<IBook>();
     const { register, handleSubmit, errors } = useForm();
@@ -53,70 +58,73 @@ function CreateEditBook(props: any) {
         }
         else
             setSnack({ open: true, type: 'error', message: 'Campos não preenchidos' });
-
     }
-
 
     return (
         <div id='page-createedit-book' data-testid='create-book'>
-            <Header />
-            <form onSubmit={handleSubmit(handleSubmitBook)}>
-                <h1>{bookId && bookId !== '' ? 'Editar livro' : 'Cadastro do livro'}</h1>
-                <fieldset>
-                    <div className='field'>
-                        <label htmlFor='title'>Título</label>
-                        <input
-                            defaultValue={bookToEdit?.title}
-                            type='text'
-                            name='title'
-                            id='title'
-                            ref={register({ required: 'Digite o nome do livro' })}
-                        />
-                        {errors.title && <span role='alert'> {errors.title.message}</span>}
+            <Header left right />
+            < div id='page-createedit-book-content'>
+                <form onSubmit={handleSubmit(handleSubmitBook)}>
+                    <h1>{bookId && bookId !== '' ? 'Editar livro' : 'Cadastro do livro'}</h1>
+                    <fieldset>
+                        <div className='field'>
+                            <label htmlFor='title'>Título</label>
+                            <input
+                                defaultValue={bookToEdit?.title}
+                                type='text'
+                                name='title'
+                                id='title'
+                                ref={register({ required: 'Digite o nome do livro' })}
+                            />
+                            {errors.title && <span role='alert'> {errors.title.message}</span>}
 
-                    </div>
-                    <div className='field'>
-                        <label htmlFor='author'>Autor</label>
-                        <input
-                            defaultValue={bookToEdit?.author}
-                            type='text'
-                            name='author'
-                            id='author'
-                            ref={register({ required: 'Digite o nome do autor' })}
-                        />
-                        {errors.author && <span role='alert'> {errors.author.message}</span>}
-                    </div>
-                    <div className='field'>
-                        <label htmlFor='description'>Descrição</label>
-                        <input
-                            defaultValue={bookToEdit?.description}
-                            type='text'
-                            name='description'
-                            id='description'
-                            ref={register({ required: 'Digite a descrição do livro' })}
-                        />
-                        {errors.description && <span role='alert'>{errors.description.message}</span>}
-                    </div>
-                    <div className='field'>
-                        <label htmlFor='image_url'>Link da imagem</label>
-                        <input
-                            defaultValue={bookToEdit?.image_url}
-                            type='text'
-                            name='image_url'
-                            id='image_url'
-                            ref={register({ required: 'Digite o link da imagem do livro' })}
-                        />
-                        {errors.image_url && <span role='alert'>{errors.image_url.message}</span>}
-                    </div>
-                </fieldset>
-                <button type='submit' data-testid='submit-button'>
-                    {bookId && bookId !== '' ? 'Salvar livro' : 'Cadastrar livro'}
-                </button>
-            </form>
-            {
-                snack.open &&
-                <SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
-            }
+                        </div>
+                        <div className='field'>
+                            <label htmlFor='author'>Autor</label>
+                            <input
+                                defaultValue={bookToEdit?.author}
+                                type='text'
+                                name='author'
+                                id='author'
+                                ref={register({ required: 'Digite o nome do autor' })}
+                            />
+                            {errors.author && <span role='alert'> {errors.author.message}</span>}
+                        </div>
+                        <div className='field'>
+                            <label htmlFor='description'>Descrição</label>
+                            <input
+                                defaultValue={bookToEdit?.description}
+                                type='text'
+                                name='description'
+                                id='description'
+                                ref={register({ required: 'Digite a descrição do livro' })}
+                            />
+                            {errors.description && <span role='alert'>{errors.description.message}</span>}
+                        </div>
+                        <div className='field'>
+                            <label htmlFor='image_url'>Link da imagem</label>
+                            <input
+                                defaultValue={bookToEdit?.image_url}
+                                type='text'
+                                name='image_url'
+                                id='image_url'
+                                ref={register({ required: 'Digite o link da imagem do livro' })}
+                            />
+                            {errors.image_url && <span role='alert'>{errors.image_url.message}</span>}
+                        </div>
+                    </fieldset>
+                    <button type='submit' data-testid='submit-button'>
+                        <span>
+                            <FiBook />
+                        </span>
+                        <strong>  {bookId && bookId !== '' ? 'Salvar livro' : 'Cadastrar livro'}</strong>
+                    </button>
+                </form>
+                {
+                    snack.open &&
+                    <SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
+                }
+            </div>
         </div>
     )
 }

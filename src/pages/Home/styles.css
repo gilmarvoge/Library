@@ -1,6 +1,6 @@
 #page-home {
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
   margin: 0;
   background: url("../../assets/home-background.svg");

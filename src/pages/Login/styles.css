@@ -1,6 +1,6 @@
 #page-login {
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
   margin: 0;
   background: url("../../assets/login-background.svg");
@@ -36,7 +36,6 @@
 #page-login form {
   width: 100%;
   max-width: 480px;
-  border-radius: 5px;
   padding: 64px;
   background: #fff;
   border-radius: 8px;
@@ -139,7 +138,7 @@
   }
 }
 
-@media ((max-width: 900px)) {
+@media (max-width: 900px) {
   #page-login form {
     margin: 0px auto;
   }

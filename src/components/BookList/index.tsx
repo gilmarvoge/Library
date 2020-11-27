@@ -1,20 +1,26 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
 import { Grid, Tooltip, Card, CardHeader, CardContent, CardActions, IconButton } from '@material-ui/core';
 import { Visibility as VisibilityIcon, Delete as DeleteIcon, MenuBook as MenuBookIcon, Edit as EditIcon } from '@material-ui/icons';
-import Dialogs from 'components/Dialogs';
-import { deleteBook, addRent, deleteRent } from 'services';
+import { SnackBar, BookDetails } from 'components';
 import { setDeletedBook, setDeletedRent, setRent } from 'redux/actions';
-import { IBook, IRent } from 'models';
-import { SnackBar } from 'components';
+import { deleteBook, addRent, deleteRent } from 'services';
+import { IBook, IRent, IRents, IBooks } from 'models';
 import './styles.css';
 
-function BookList(props: any) {
-  const { filteredBooks, rents, dispatch, userId } = props;
+interface BookListProps {
+  books: IBooks;
+  rents: IRents;
+  userId: string;
+}
+
+function BookList(props: BookListProps) {
+  const { books, rents, userId } = props;
   const { push } = useHistory();
+  const dispatch = useDispatch();
   const [snack, setSnack] = useState({ open: false, type: '', message: '' });
-  const [showMore, setShowMore] = useState({ open: false, book: {} });
+  const [showDetails, setShowDetails] = useState({ open: false, book: {} });
 
   const handleDeleteBook = async (id: string, bookOwnerRent: string) => {
     if (bookOwnerRent !== 'UNAVAILABLE') {
@@ -69,11 +75,11 @@ function BookList(props: any) {
       setSnack({ open: true, type: 'warning', message: 'Este livro está alugado' });
   }
 
-  const filterHasfilteredBooksRented = (bookId: string) => {
+  const filterHasbooksRented = (bookId: string) => {
     //Testar se usuário logado é o dono do aluguel do livro, ou está alugado por outro user,
     //ou está disponível para aluguel
-    const rentedfilteredBooks = rents.filter((rent: IRent) => rent.book_id === bookId);
-    if (rentedfilteredBooks.length) {
+    const rentedbooks = rents.filter((rent: IRent) => rent.book_id === bookId);
+    if (rentedbooks.length) {
       const rented = rents.filter((rent: IRent) => rent.book_id === bookId && rent.user_id === userId)
       if (rented.length)
         return 'RENTED';
@@ -86,9 +92,9 @@ function BookList(props: any) {
 
   return (
     <Grid container spacing={2} justify='center' >
-      {showMore && <Dialogs open={showMore.open} book={showMore.book} close={() => setShowMore({ open: false, book: {} })} />}
-      {filteredBooks && filteredBooks.map((book: IBook) => {
-        const bookOwnerRent = filterHasfilteredBooksRented(String(book.id));
+      {showDetails && <BookDetails open={showDetails.open} book={showDetails.book} onClose={setShowDetails} />}
+      {books && books.map((book: IBook) => {
+        const bookOwnerRent = filterHasbooksRented(String(book.id));
         return (
           <Grid item key={book.id}>
             <Card
@@ -149,7 +155,7 @@ function BookList(props: any) {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title='Mais Informações' placement='bottom'>
-                  <IconButton onClick={() => setShowMore({ open: true, book })}>
+                  <IconButton onClick={() => setShowDetails({ open: true, book })}>
                     <VisibilityIcon />
                   </IconButton>
                 </Tooltip>

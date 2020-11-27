@@ -1,21 +1,25 @@
 #page-createedit-book {
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
-  margin: 0;
- 
+  margin: 0; 
   background: url("../../assets/create-edit-background.svg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: bottom right;
+}
 
-  position: relative;
+#page-createedit-book-content {
+  width: 100%;
+  display: flex;
+  -webkit-box-pack: justify;
+  justify-content: center;
 }
 
 #page-createedit-book form {
-  margin: 0 auto;
-  padding: 1px 40px 20px;
-  max-width: 500px;  
+  width: 100%;
+  max-width: 580px;
+  padding: 30px 64px 64px 64px;
   background: #fff;
   border-radius: 8px;
   display: flex;
@@ -23,12 +27,12 @@
 }
 
 #page-createedit-book form h1 {
-  font-size: 36px;
+  font-size: 40px;
   margin-top: 15px;
 }
 
 #page-createedit-book form fieldset {
-  margin-top: 20px;
+  margin-top: 64px;
   min-inline-size: auto;
   border: 0;
 }
@@ -45,7 +49,7 @@
   background: #f0f0f5;
   border-radius: 8px;
   border: 0;
-  padding: 12px 24px;
+  padding: 16px 24px;
   font-size: 16px;
   color: #6c6c80;
 }
@@ -64,22 +68,46 @@
 }
 
 #page-createedit-book form button {
-  width: 260px;
-  height: 45px;
+  height: 56px;
   background: var(--primary-color);
   border-radius: 8px;
   color: #fff;
   font-weight: bold;
   font-size: 16px;
   border: 0;
-  align-self: flex-end;
-  margin-top: 15px;
+  align-items: center;
+  margin-top: 40px;
   transition: background-color 0.2s;
   cursor: pointer;
+  display: flex;
+  outline: auto;
 }
 
 #page-createedit-book form button:hover {
   background: var(--hover-color);
+}
+
+#page-createedit-book form button span {
+  display: block;
+  background: rgba(0, 0, 0, 0.08);
+  width: 72px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+#page-createedit-book form button strong {
+  flex: 1 1;
+  text-align: center;
+  color: #fff;
+}
+
+#page-createedit-book form button span svg {
+  color: #fff;
+  width: 20px;
+  height: 20px;
 }
 
 @media (max-width: 500px) {

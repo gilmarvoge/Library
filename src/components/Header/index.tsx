@@ -1,6 +1,5 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
@@ -9,9 +8,15 @@ import { logoff } from 'services/auth';
 import logo from '../../assets/logo.svg';
 import './styles.css';
 
-function Header(props: any) {
-  const { search } = props;
-  let { location, push } = useHistory();
+interface HeaderProps {
+  right?: Boolean,
+  left?: Boolean,
+  search?: React.ReactNode;
+}
+
+function Header(props: HeaderProps) {
+  const { search, right, left } = props;
+  let { push } = useHistory();
 
   const signOut = () => {
     logoff();
@@ -23,7 +28,7 @@ function Header(props: any) {
       <header data-testid='header'>
         <div className='header-logo'>
           <div className='header-actions-start'>
-            {location?.pathname !== '/' &&
+            {left &&
               <Tooltip title='Voltar' placement='bottom'>
                 <IconButton onClick={() => push('/')}>
                   <ArrowBackIcon fontSize='large' />
@@ -42,18 +47,20 @@ function Header(props: any) {
           {search}
         </div>
         <div className='header-actions-end'>
-          <Tooltip title='Sair' placement='bottom'>
-            <IconButton onClick={signOut} >
-              <ExitToAppIcon fontSize='large' />
-            </IconButton>
-          </Tooltip>
+          {right &&
+            <Tooltip title='Sair' placement='bottom'>
+              <IconButton onClick={signOut} >
+                <ExitToAppIcon fontSize='large' />
+              </IconButton>
+            </Tooltip>
+          }
         </div>
       </header>
     </div>
   )
 }
 
-export default connect()(Header);
+export default Header;
 
 
 

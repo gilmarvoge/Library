@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FiSmile } from 'react-icons/fi';
-import { SnackBar } from 'components';
+import { SnackBar, Header } from 'components';
 import { addUser, validateUser } from 'services';
-import logo from '../../assets/logo.svg';
 
 function SignUp() {
     const { register, handleSubmit, errors, reset } = useForm();
@@ -16,10 +15,9 @@ function SignUp() {
         try {
             const newUser = { user, password };
             const responseValidate = await validateUser(user);
-            if (responseValidate.data) {
-                console.log('sdsdsdsd', responseValidate.data)
+            if (responseValidate.data.length)               
                 setSnack({ open: true, type: 'error', message: 'Exte usuário já possui cadastro' });
-            } else {
+            else {
                 const response = await addUser(newUser);
                 if (response.data) {
                     reset();
@@ -34,10 +32,10 @@ function SignUp() {
 
     return (
         <div id='page-login'>
+            <Header />
             <div id='page-login-content'>
                 <form id='formuser' onSubmit={handleSubmit(handleSubmitUser)}>
                     <header>
-                        <img src={logo} alt='Biblioteca' />
                         <h1>Crie sua conta</h1>
                     </header>
                     <fieldset>
@@ -62,7 +60,6 @@ function SignUp() {
                             {errors.password && <span role="alert">{errors.password.message}</span>}
                         </div>
                     </fieldset>
-
                     <button type='submit'>
                         <span>
                             <FiSmile />

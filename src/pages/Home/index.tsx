@@ -1,22 +1,25 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { Fab, Tooltip} from '@material-ui/core';
-import {  Add as AddIcon } from '@material-ui/icons';
-import Header from 'components/Header';
-import BookList from 'components/BookList';
-import SearchBar from 'components/SearchBar';
-import { SnackBar } from 'components';
+import { connect, useDispatch } from 'react-redux';
+import { Fab, Tooltip } from '@material-ui/core';
+import { Add as AddIcon } from '@material-ui/icons';
+import { SnackBar, BookList, Header, SearchBar } from 'components';
 import { getBooks, getUserIdStorage, getRents } from 'services';
-import {  setAllRents, setAllBooks } from 'redux/actions';
+import { setAllRents, setAllBooks } from 'redux/actions';
 import { IBooks, IBook, IRents } from 'models';
 import './styles.css';
 
-function Home(props: any) {
-  const { books, rents, dispatch } = props;
+interface HomeProps {
+  books: IBooks;
+  rents: IRents;
+}
+
+function Home(props: HomeProps) {
+  const { books, rents } = props;
   const { push } = useHistory();
+  const dispatch = useDispatch();
   const [userId, setUserId] = useState('');
-  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [filteredBooks, setFilteredBooks] = useState<IBooks>([]);
   const [querySearch, setQuerySearch] = useState('');
   const [snack, setSnack] = useState({ open: false, type: '', message: '' });
 
@@ -56,14 +59,17 @@ function Home(props: any) {
 
   return (
     <div id='page-home' data-testid='home'>
-      <Header search={<SearchBar onChange={handleSearch} />}
+      <Header right
+        search={
+          <SearchBar onChange={handleSearch} />
+        }
       />
       <div className='content'>
-        {/* <BookList
-          filteredBooks={filteredBooks}
+        <BookList
+          books={filteredBooks}
           userId={userId}
           rents={rents}
-        /> */}
+        />
       </div>
       <Tooltip title='Adicionar livro' placement='bottom'>
         <Fab
@@ -79,7 +85,12 @@ function Home(props: any) {
       </Tooltip>
       {
         snack.open &&
-        < SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
+        < SnackBar
+          open={snack.open}
+          type={snack.type}
+          message={snack.message}
+          onClose={setSnack}
+        />
       }
     </div >
   )

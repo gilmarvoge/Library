@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { FiLogIn } from 'react-icons/fi';
-import {SnackBar} from 'components';
+import { Header, SnackBar } from 'components';
 import { login, getLogin } from 'services';
-import logo from '../../assets/logo.svg';
 import './styles.css';
 
 function Login() {
@@ -21,20 +20,20 @@ function Login() {
                 const result = Object.assign({}, ...response.data);
                 login(String(result.id));
 
-                push('/'); 
+                push('/');
             } else
                 setSnack({ open: true, type: 'error', message: 'Usuário ou senha incorretos' });
         } catch (error) {
             setSnack({ open: true, type: 'error', message: `Não foi possível realizar o login ${error}` });
         }
-    } 
+    }
 
     return (
         <div id='page-login'>
+            <Header />
             <div id='page-login-content'>
                 <form id='formuser' onSubmit={handleSubmit(handleSubmitUser)}>
                     <header>
-                        <img src={logo} alt='Biblioteca' />
                         <h1>Login</h1>
                     </header>
                     <fieldset>
