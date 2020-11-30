@@ -140,7 +140,7 @@ function BookList(props: BookListProps) {
                 disableSpacing
               >
                 <Tooltip title={`${bookOwnerRent === 'RENTED' ?
-                  'Livro alugado' : bookOwnerRent === 'UNAVAILABLE' ?
+                  'Devolver livro' : bookOwnerRent === 'UNAVAILABLE' ?
                     'Livro não disponível' : 'Alugar livro'}`}
                   placement='bottom'
                 >
