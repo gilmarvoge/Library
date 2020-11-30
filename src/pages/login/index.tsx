@@ -70,7 +70,12 @@ function Login() {
                 </form>
                 {
                     snack.open &&
-                    < SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
+                    < SnackBar
+                        open={snack.open}
+                        type={snack.type}
+                        message={snack.message}
+                        onClose={setSnack}
+                    />
                 }
             </div>
         </div>

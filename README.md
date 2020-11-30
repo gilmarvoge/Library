@@ -18,10 +18,15 @@ Docker em modo de desenvolvimento
 - Build imagem do app
 - docker build -t library:dev .
 
-Start docker image
+Start docker imagem
 - docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm library:dev
 
 Criar o Container a partir da imagem
 - docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm library:dev
 
 Aplicação pelo docker roda no localhost:3001
+
+Docker produção heroku
+docker build dockerfile-prod -t registry.heroku.com/library-design/web . 
+
+docker-compose -f heroku.yml up -d --build

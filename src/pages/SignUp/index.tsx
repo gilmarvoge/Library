@@ -15,7 +15,7 @@ function SignUp() {
         try {
             const newUser = { user, password };
             const responseValidate = await validateUser(user);
-            if (responseValidate.data.length)               
+            if (responseValidate.data.length)
                 setSnack({ open: true, type: 'error', message: 'Exte usuário já possui cadastro' });
             else {
                 const response = await addUser(newUser);
@@ -72,7 +72,12 @@ function SignUp() {
                 </form>
                 {
                     snack.open &&
-                    < SnackBar open={snack.open} type={snack.type} message={snack.message} onClose={setSnack} />
+                    < SnackBar
+                        open={snack.open}
+                        type={snack.type}
+                        message={snack.message}
+                        onClose={setSnack}
+                    />
                 }
             </div>
         </div>
