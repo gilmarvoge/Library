@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import { FiBook, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
@@ -19,13 +19,12 @@ interface CreateEditBookProps {
 }
 
 function CreateEditBook(props: CreateEditBookProps) {
-    const { push } = useHistory();
     const dispatch = useDispatch();
     const { bookId } = useParams<ParamTypes>();
     const { books } = props;
     const [snack, setSnack] = useState({ open: false, type: '', message: '' });
     const [bookToEdit, setBookToEdit] = useState<IBook>();
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, reset, errors } = useForm();
 
     useEffect(() => {
         if (bookId !== '') {
@@ -53,7 +52,8 @@ function CreateEditBook(props: CreateEditBookProps) {
                 if (response.data)
                     dispatch(setBook(response.data));
             }
-            push('/');
+            reset();
+            setSnack({ open: true, type: 'success', message: 'Livo Cadastrado com sucesso' });
         }
         else
             setSnack({ open: true, type: 'error', message: 'Campos não preenchidos' });
