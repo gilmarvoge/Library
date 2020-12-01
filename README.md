@@ -5,7 +5,7 @@ Fake Mock API Endpoints:
 
 Passos para executar app:
 - npm install
-- npm start
+-  <b>npm run dev </b>
 
 Usuário para login, caso não deseje criar um novo :
 - Usuário: admin
@@ -22,11 +22,12 @@ Start docker imagem
 - docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm library:dev
 
 Criar o Container a partir da imagem
-- docker run -v ${PWD}:/app -v /app/node_modules -p 3001:3000 --rm library:dev
+- docker-compose up -d --build
 
 Aplicação pelo docker roda no localhost:3001
 
-Docker produção heroku
-docker build dockerfile-prod -t registry.heroku.com/library-design/web . 
 
-docker-compose -f heroku.yml up -d --build
+Docker produção heroku
+- docker build -t registry.heroku.com/library-design/web . 
+- docker push registry.heroku.com/library-design/web
+

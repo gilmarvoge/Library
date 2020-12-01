@@ -46,14 +46,16 @@ function CreateEditBook(props: CreateEditBookProps) {
                 let response = await editBook(bookId, book);
                 if (response.data) {
                     dispatch(setEditedBook(bookId, book));
+                    setSnack({ open: true, type: 'success', message: 'Livo editado com sucesso' });
                 }
             } else {
                 let response = await addBook(book);
-                if (response.data)
+                if (response.data){
                     dispatch(setBook(response.data));
+                    setSnack({ open: true, type: 'success', message: 'Livo cadastrado com sucesso' });
+                }
             }
-            reset();
-            setSnack({ open: true, type: 'success', message: 'Livo Cadastrado com sucesso' });
+            reset();            
         }
         else
             setSnack({ open: true, type: 'error', message: 'Campos não preenchidos' });
