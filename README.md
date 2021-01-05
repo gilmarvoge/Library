@@ -1,11 +1,10 @@
-Fake Mock API Endpoints:
-- https://5fbcdf9f3f8f90001638c61a.mockapi.io/users
-- https://5fbcdf9f3f8f90001638c61a.mockapi.io/books
-- https://5fbcdf9f3f8f90001638c61a.mockapi.io/rents
+![Web home](https://github.com/gilmarvoge/Library/tree/main/src/assets/home.png)
 
-Passos para executar app:
+## 💻 About
+
+### :desktop_computer: Run web (Front End)
 - npm install
--  <b>npm run dev </b>
+- <b>npm run dev </b>
 
 Usuário para login, caso não deseje criar um novo :
 - Usuário: admin
@@ -13,6 +12,29 @@ Usuário para login, caso não deseje criar um novo :
   
 Executar os teste unitários do app:
 - npm test
+
+## 🛠 Technology
+
+- [React][reactjs]
+- [TypeScript][typescript]
+
+<b>Funcionalidades:</b>
+Login
+- Tela inicial deve ser o login
+- Não deve ser possível acessar outras telas sem realizar o login
+- Lista de livros
+- Exibir uma lista com todos os livros cadastrados, com opção para pesquisa
+- Exibir mais detalhes do livro
+- Permitir alugar um livro
+- Não permitir alugar um livro já alugado
+CRUD de livros
+- Criar cadastro, edição e remoção de livros
+- Não deve ser possível editar e remover livros que estão alugados
+
+Fake Mock API Endpoints:
+- https://5fbcdf9f3f8f90001638c61a.mockapi.io/users
+- https://5fbcdf9f3f8f90001638c61a.mockapi.io/books
+- https://5fbcdf9f3f8f90001638c61a.mockapi.io/rents
 
 Docker em modo de desenvolvimento
 - Build imagem do app
