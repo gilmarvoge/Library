@@ -1,5 +1,5 @@
 import Alert from './Alert';
-import SnackBar from './Snackbar';
+import SnackBar from './SnackBar';
 import BookDetails from './BookDetails';
 import BookList from './BookList';
 import Header from './Header';
