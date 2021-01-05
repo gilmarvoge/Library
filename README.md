@@ -1,4 +1,4 @@
-![Web home](https://github.com/gilmarvoge/Library/tree/main/src/assets/home.png)
+![home](https://github.com/gilmarvoge/Library/tree/main/src/assets/home.png)
 
 ## 💻 About
 
