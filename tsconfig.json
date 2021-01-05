@@ -3,6 +3,9 @@
     "outDir": "./build/",
     "baseUrl": "./src",
     "target": "es5",
+    "paths": {
+      "@/pages/*": ["pages/*"]
+    },
     "lib": [
       "dom",
       "dom.iterable",
