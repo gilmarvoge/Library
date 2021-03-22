@@ -2,7 +2,7 @@
   "compilerOptions": {
     "outDir": "build",
     "baseUrl": "src",
-    "include": ["src"]
+    "include": ["src"],
     "target": "es5",
     "lib": [
       "dom",
