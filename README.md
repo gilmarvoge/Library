@@ -1,7 +1,6 @@
+Live Demo: https://library-ivpn28krp-gilmarvoge.vercel.app/
+
 ![](src/assets/home.png)
-![](src/assets/edit.png)
-![](src/assets/new.png)
-![](src/assets/login.png)
 
 ## 💻 About
 
