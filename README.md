@@ -5,8 +5,13 @@ Live Demo: https://library-ivpn28krp-gilmarvoge.vercel.app/
 ## 💻 About
 
 ### :desktop_computer: Run web (Front End)
-- npm install
-- <b>npm run dev </b>
+
+```bash
+git clone
+cd Library
+npm install
+npm run dev
+```
 
 Usuário para login, caso não deseje criar um novo :
 - Usuário: admin
