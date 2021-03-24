@@ -2,7 +2,7 @@ import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { createMemoryHistory } from "history";
 import { Router } from 'react-router-dom';
-import Login from 'pages/Login';
+import { Login } from 'pages';
 
 describe('test create book page', () => {
   const history = createMemoryHistory()

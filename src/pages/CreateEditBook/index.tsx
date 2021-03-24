@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { connect, useDispatch } from 'react-redux';
 import { FiBook, FiSave } from 'react-icons/fi';
 import { useForm } from 'react-hook-form';
@@ -20,6 +20,7 @@ interface CreateEditBookProps {
 
 function CreateEditBook(props: CreateEditBookProps) {
     const dispatch = useDispatch();
+    const { push } = useHistory();
     const { bookId } = useParams<ParamTypes>();
     const { books } = props;
     const [snack, setSnack] = useState({ open: false, type: '', message: '' });
@@ -46,16 +47,18 @@ function CreateEditBook(props: CreateEditBookProps) {
                 let response = await editBook(bookId, book);
                 if (response.data) {
                     dispatch(setEditedBook(bookId, book));
-                    setSnack({ open: true, type: 'success', message: 'Livo editado com sucesso' });
+                    push('/');
+                    //setSnack({ open: true, type: 'success', message: 'Livo editado com sucesso' });
                 }
             } else {
                 let response = await addBook(book);
-                if (response.data){
+                if (response.data) { 
                     dispatch(setBook(response.data));
-                    setSnack({ open: true, type: 'success', message: 'Livo cadastrado com sucesso' });
+                    push('/');
+                    //setSnack({ open: true, type: 'success', message: 'Livo cadastrado com sucesso' });
                 }
             }
-            reset();            
+            reset();
         }
         else
             setSnack({ open: true, type: 'error', message: 'Campos não preenchidos' });

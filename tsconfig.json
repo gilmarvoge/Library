@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "build",
-    "baseUrl": "src",    
+    "baseUrl": "src",
     "target": "es5",
     "lib": [
       "dom",
@@ -22,4 +22,7 @@
     "noEmit": true,
     "jsx": "react"
   },
+  "include": [
+    "src"
+  ]
 }
