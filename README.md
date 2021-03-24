@@ -21,9 +21,8 @@ Executar os teste unitários do app:
 - npm test
 
 ## 🛠 Technology
-
-- [React][reactjs]
-- [TypeScript][typescript]
+- 🔵 [TypeScript][typescript]
+- ⚛️ [React][reactjs]
 
 <b>Funcionalidades:</b>
 Login
