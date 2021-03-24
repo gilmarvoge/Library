@@ -11,7 +11,7 @@ describe('test create book page', () => {
       <Login />
     </Router>
   );
-
+ 
   beforeEach(() => {
     render(component);
   });
@@ -22,6 +22,7 @@ describe('test create book page', () => {
     fireEvent.submit(screen.getByText('Entrar'));
     expect(await screen.findAllByRole('alert')).toHaveLength(2);
   });
+  
   test("should not display error when value is valid", async () => {
     fireEvent.input(screen.getByLabelText('Usuário'), { target: { value: 'hardware' } });
     fireEvent.input(screen.getByLabelText('Senha'), { target: { value: '12345' } });
