@@ -2,10 +2,7 @@ import React from 'react';
 import { Route, BrowserRouter, Switch } from 'react-router-dom';
 import { PrivateRoute } from './PrivateRoutes';
 import Home from 'pages/Home';
-import Login from 'pages/Login';
-import SignUp from 'pages/SignUp';
-import CreateEditBook from 'pages/CreateBook';
-import NotFound from 'pages/NotFound';
+import { Login, CreateEditBook, SignUp, NotFound } from 'pages';
 
 function Routes() {
   return (

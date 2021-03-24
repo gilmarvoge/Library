@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import store from 'store';
 import React from 'react';
 import { Router } from 'react-router-dom';
-import CreateEditBook from 'pages/CreateBook';
+import CreateEditBook from 'pages/CreateEditBook';
 
 describe('test create book page', () => {
   const history = createMemoryHistory()
