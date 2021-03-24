@@ -21,8 +21,11 @@ Executar os teste unitários do app:
 - npm test
 
 ## 🛠 Technology
-- 🔵 [TypeScript][typescript]
-- ⚛️ [React][reactjs]
+- 🔵 TypeScript
+- ⚛️ Reactjs
+- Redux
+- Jest
+- Docker
 
 <b>Funcionalidades:</b>
 Login
