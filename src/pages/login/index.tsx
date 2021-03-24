@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { FiLogIn } from 'react-icons/fi';
 import { Header, SnackBar } from 'components';
 import { login, getLogin } from 'services';
-import './styles.css';
+import './styles.css'; 
 
 function Login() {
     const { push } = useHistory();
