@@ -10,8 +10,7 @@ describe('test create book page', () => {
     <Router history={history}>
       <Login />
     </Router>
-  );
- 
+  );  
   beforeEach(() => {
     render(component);
   });
